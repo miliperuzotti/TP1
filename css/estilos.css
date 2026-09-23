@@ -1,0 +1,164 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+#contenedor {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ---------- NAVEGACIÓN ---------- */
+
+nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0;
+    padding: 20px;
+    gap: 20px;
+    list-style: none;
+}
+
+nav a {
+    text-decoration: none;
+}
+
+
+/* ---------- TÍTULO ---------- */
+
+header h1 {
+    text-align: center;
+    margin: 30px 0;
+}
+
+
+/* ---------- CONTENIDO ---------- */
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    text-align: center;
+}
+
+
+/* ---------- PANTALLAS ---------- */
+
+/*
+   Por ahora todas las pantallas están ocultas,
+   excepto la primera.
+*/
+
+#pantalla-jugadores,
+#pantalla-tematica,
+#pantalla-dificultad,
+#pantalla-juego,
+#pantalla-resultado {
+    display: none;
+}
+
+#pantalla-modo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* ---------- BOTONES ---------- */
+
+button {
+    padding: 12px 25px;
+    margin: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+
+/* ---------- JUGADORES ---------- */
+
+#pantalla-jugadores {
+    flex-direction: column;
+    align-items: center;
+}
+
+#pantalla-jugadores label {
+    margin-top: 10px;
+}
+
+#pantalla-jugadores input {
+    margin: 5px 0 10px 0;
+    padding: 8px;
+}
+
+
+/* ---------- TEMÁTICA ---------- */
+
+#pantalla-tematica {
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* ---------- DIFICULTAD ---------- */
+
+#pantalla-dificultad {
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* ---------- JUEGO ---------- */
+
+#pantalla-juego {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* Información de los jugadores */
+
+#informacion-jugadores {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+
+/* Tablero */
+
+#tablero {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 90%;
+    max-width: 900px;
+    margin: 30px auto;
+    gap: 10px;
+}
+
+
+/* ---------- RESULTADO ---------- */
+
+#pantalla-resultado {
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* ---------- FOOTER ---------- */
+
+footer {
+    text-align: center;
+    padding: 20px;
+}
+
+footer img {
+    margin-top: 10px;
+}
