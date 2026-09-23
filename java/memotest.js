@@ -16,6 +16,12 @@ const btnNombres = document.querySelector("#btn-nombres");
 const btnCultura = document.querySelector("#btn-cultura");
 const btnAlbumes = document.querySelector("#btn-albumes");
 
+const btnFacil = document.querySelector("#btn-facil");
+const btnMedio = document.querySelector("#btn-medio");
+const btnDificil = document.querySelector("#btn-dificil");
+
+const pantallaJuego = document.querySelector("#pantalla-juego");
+
 
 // Variables que guardan las decisiones de la partida
 
@@ -25,6 +31,8 @@ let nombre1 = "";
 let nombre2 = "";
 
 let tematica = "";
+
+let cantidadParejas = 0;
 
 
 // Cuando se hace click en "Solo"
@@ -92,5 +100,40 @@ btnAlbumes.addEventListener("click", function() {
 
     pantallaTematica.style.display = "none";
     pantallaDificultad.style.display = "flex";
+
+});
+
+// Cuando se hace click en "Fácil"
+
+btnFacil.addEventListener("click", function() {
+
+    cantidadParejas = 10;
+
+    pantallaDificultad.style.display = "none";
+    pantallaJuego.style.display = "flex";
+
+});
+
+
+// Cuando se hace click en "Medio"
+
+btnMedio.addEventListener("click", function() {
+
+    cantidadParejas = 15;
+
+    pantallaDificultad.style.display = "none";
+    pantallaJuego.style.display = "flex";
+
+});
+
+
+// Cuando se hace click en "Difícil"
+
+btnDificil.addEventListener("click", function() {
+
+    cantidadParejas = 20;
+
+    pantallaDificultad.style.display = "none";
+    pantallaJuego.style.display = "flex";
 
 });
