@@ -12,8 +12,16 @@ const nombreJugador2 = document.querySelector("#nombre-jugador2");
 
 const btnNombres = document.querySelector("#btn-nombres");
 
-// Guardo el modo de juego
+
+
+// Variables que guardan las decisiones de la partida
+
 let modoJuego = "";
+
+let nombre1 = "";
+let nombre2 = "";
+
+
 
 // Cuando se hace click en "Solo"
 
@@ -21,8 +29,8 @@ btnSolo.addEventListener("click", function() {
 
     modoJuego = "solo";
 
-pantallaModo.style.display = "none"; 
-pantallaTematica.style.display = "flex";
+    pantallaModo.style.display = "none";
+    pantallaTematica.style.display = "flex";
 
 });
 
@@ -38,10 +46,23 @@ btnMultijugador.addEventListener("click", function() {
 
 });
 
+
 // Cuando se hace click en "Continuar"
+
 btnNombres.addEventListener("click", function() {
 
-    pantallaJugadores.style.display = "none";
-    pantallaTematica.style.display = "flex";
+    if (nombreJugador1.value != "" && nombreJugador2.value != "") {
+
+        nombre1 = nombreJugador1.value;
+        nombre2 = nombreJugador2.value;
+
+        pantallaJugadores.style.display = "none";
+        pantallaTematica.style.display = "flex";
+
+    } else {
+
+        alert("Ingresen los nombres de los dos jugadores.");
+
+    }
 
 });
