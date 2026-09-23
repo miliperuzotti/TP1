@@ -2,7 +2,7 @@
 <html lang="es">
     <head>
         <meta charset="utf-8">
-        <title></title>
+        <title>MemoTest</title>
         <!--links-->
         <link href="css/estilos.css" rel="stylesheet">
     </head>
@@ -21,11 +21,65 @@
                     </ul>
                 </nav>
                 <!--titulo principal-->
-                <h1></h1>
+                <h1>MEMOTEST</h1>
             </header>
 
-            <!--CONTENIDO-->
-            <main></main>
+            <!--CONTENIDO DEL JUEGO-->
+            <main>
+
+                <!-- PANTALLA 1: elegir modo de juego --> 
+                 <section id="pantalla-modo">
+
+                    <h2>¿Cómo querés jugar?</h2>
+                    <button id="btn-solo">Solo</button>
+                    <button id="btn-multijugador">2 jugadores</button> 
+
+                </section>
+
+                <!-- PANTALLA 2: ingresar nombres --> 
+                 <section id="pantalla-jugadores"> 
+                    <h2>Ingresen sus nombres</h2> 
+
+                    <label for="nombre-jugador1">Jugador 1</label> 
+                    <input type="text" id="nombre-jugador1"> 
+
+                    <label for="nombre-jugador2">Jugador 2</label> 
+                    <input type="text" id="nombre-jugador2">
+
+                    <button id="btn-nombres">Continuar</button> 
+                    </section>
+
+                <!-- PANTALLA 3: elegir temática -->
+                 <section id="pantalla-tematica">
+                    <h2>Elegí una temática</h2>
+                    
+                    <button id="btn-cultura">Cultura general</button>
+                    <button id="btn-albumes">Álbumes</button> 
+                    </section>
+
+                <!-- PANTALLA 4: elegir dificultad -->
+                 <section id="pantalla-dificultad">
+                    <h2>Elegí la dificultad</h2>
+                    
+                    <button id="btn-facil">Fácil</button>
+                    <button id="btn-medio">Medio</button>
+                    <button id="btn-dificil">Difícil</button> 
+                    </section>
+
+                <!-- PANTALLA 5: juego -->
+                 <section id="pantalla-juego">
+                    <div id="informacion-jugadores"> <!-- Acá aparecerán los datos de los jugadores --> </div> 
+                    <div id="turno"> <!-- Acá aparecerá de quién es el turno --> </div> 
+                    <div id="tablero"> <!-- JavaScript va a crear las cartas acá --> </div> 
+                </section>
+
+                <!-- PANTALLA 6: resultado -->
+                 <section id="pantalla-resultado">
+                    <h2 id="mensaje-resultado"></h2>
+                    
+                    <button id="btn-jugar-nuevo">Jugar de nuevo</button> 
+                </section>
+            </main>
             <footer>
                 <hr>
                 <address><p>Página web desarrollada por Milagros Peruzotti y Teodoro Block
