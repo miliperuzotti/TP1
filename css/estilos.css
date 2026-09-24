@@ -131,7 +131,7 @@ button {
 }
 
 
-/* Tablero */
+/* ---------- TABLERO ---------- */
 
 #tablero {
     display: flex;
@@ -140,7 +140,9 @@ button {
     width: 90%;
     max-width: 900px;
     margin: 30px auto;
+    padding: 20px;
     gap: 10px;
+    border: 2px solid black;
 }
 
 
@@ -161,4 +163,44 @@ footer {
 
 footer img {
     margin-top: 10px;
+}
+
+/* ---------- CARTA ----------*/
+.carta {
+     width: 100px;
+     height: 100px;
+     margin: 5px;
+     position: relative;
+     cursor: pointer; 
+     perspective: 1000px;
+}
+
+.frente, .reverso {
+    width: 100%;
+    height: 100%; 
+    position: absolute; 
+    backface-visibility: hidden; 
+    transition: transform 0.5s;
+}
+
+.frente { 
+    transform: rotateY(180deg); 
+    
+}
+
+.frente img {
+    width: 100%;
+    height: 100%;
+}
+
+.reverso {
+     background-color: black;
+}
+
+.carta.girada .frente { 
+    transform: rotateY(0deg); 
+} 
+
+.carta.girada .reverso { 
+    transform: rotateY(180deg); 
 }

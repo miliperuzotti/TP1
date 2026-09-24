@@ -21,6 +21,7 @@ const btnMedio = document.querySelector("#btn-medio");
 const btnDificil = document.querySelector("#btn-dificil");
 
 const pantallaJuego = document.querySelector("#pantalla-juego");
+const tablero = document.querySelector("#tablero");
 
 
 // Variables que guardan las decisiones de la partida
@@ -34,6 +35,7 @@ let tematica = "";
 
 let cantidadParejas = 0;
 
+let cartas = [];
 
 // Cuando se hace click en "Solo"
 
@@ -109,9 +111,12 @@ btnFacil.addEventListener("click", function() {
 
     cantidadParejas = 10;
 
+    generarCartas();
+    mezclarCartas();
+    mostrarCartas();
+
     pantallaDificultad.style.display = "none";
     pantallaJuego.style.display = "flex";
-
 });
 
 
@@ -120,10 +125,13 @@ btnFacil.addEventListener("click", function() {
 btnMedio.addEventListener("click", function() {
 
     cantidadParejas = 15;
+    
+    generarCartas();
+    mezclarCartas();
+    mostrarCartas();
 
     pantallaDificultad.style.display = "none";
     pantallaJuego.style.display = "flex";
-
 });
 
 
@@ -132,8 +140,80 @@ btnMedio.addEventListener("click", function() {
 btnDificil.addEventListener("click", function() {
 
     cantidadParejas = 20;
+   
+    generarCartas();
+    mezclarCartas();
+    mostrarCartas();
 
     pantallaDificultad.style.display = "none";
     pantallaJuego.style.display = "flex";
-
 });
+
+// Generar las parejas (se guardan pares pero en orden)
+function generarCartas() {
+
+    cartas = [];
+
+    for (let i = 1; i <= cantidadParejas; i++) {
+
+        cartas.push(i);
+        cartas.push(i);
+
+    }
+
+    console.log(cartas);
+}
+
+function mezclarCartas() {
+
+    cartas.sort(function() {
+
+        return Math.random() - 0.5;
+    });
+
+    console.log(cartas);
+}
+
+function mostrarCartas() {
+
+    tablero.innerHTML = ""; //limpia el tablero
+    for (let i = 0; i < cartas.length; i++) {
+
+        // Creo la carta 
+        const carta = document.createElement("div");
+
+        // Creo las dos caras 
+        const frente = document.createElement("div"); 
+        const reverso = document.createElement("div"); 
+
+        // Creo la imagen del frente
+        const imagen = document.createElement("img");
+
+        // Agrego las clases
+        carta.classList.add("carta");
+        frente.classList.add("frente"); 
+        reverso.classList.add("reverso");
+
+        // Guardo el número de la pareja
+        carta.dataset.numero = cartas[i]; //dataset guarda datos dentro de un elemento html
+
+        // Indico qué imagen tiene la carta
+        imagen.src = "img/memotest/" + tematica + "/" + cartas[i] + ".jpg"; /*crea la ruta que tiene que elegir la imagen 
+        segun la eleccion del usuario*/
+        
+        // Agrego la imagen al frente
+        frente.append(imagen);
+
+        // Agrego las dos caras a la carta
+        carta.append(frente); 
+        carta.append(reverso);
+
+        // Agrego la carta al tablero
+        tablero.append(carta); 
+
+        // Giro la carta al hacer click
+        carta.addEventListener("click", function() {
+             carta.classList.add("girada");
+            });
+    } 
+}
