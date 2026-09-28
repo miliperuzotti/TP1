@@ -22,6 +22,13 @@ const btnDificil = document.querySelector("#btn-dificil");
 
 const tablero = document.querySelector("#tablero");
 
+const textoMovimientos = document.querySelector("#movimientos");
+const textoParejas = document.querySelector("#parejas");
+
+const pantallaResultado = document.querySelector("#pantalla-resultado");
+const mensajeResultado = document.querySelector("#mensaje-resultado");
+const btnJugarNuevo = document.querySelector("#btn-jugar-nuevo");
+
 // Variables que guardan las decisiones de la partida
 
 let modoJuego = "";
@@ -30,7 +37,11 @@ let nombre2 = "";
 let tematica = "";
 let cantidadParejas = 0;
 let cartas = [];
-
+let primeraCarta = null;
+let segundaCarta = null;
+let bloqueado = false; //evita que se puedan seleccionar cartas mientras estamos comprobando las dos anteriores
+let movimientos = 0;
+let parejasEncontradas = 0;
 
 // EVENTOS
 
@@ -66,6 +77,9 @@ btnFacil.addEventListener("click", () => iniciarJuego(10));
 btnMedio.addEventListener("click", () => iniciarJuego(15));
 btnDificil.addEventListener("click", () => iniciarJuego(20));
 
+//reiniciar juego
+btnJugarNuevo.addEventListener("click", reiniciarJuego);
+
 
 // FUNCIONES
 
@@ -89,6 +103,12 @@ function guardarNombres() {
 
 function iniciarJuego(parejas) {
     cantidadParejas = parejas;
+    
+    movimientos = 0;
+    parejasEncontradas = 0;
+
+    textoMovimientos.textContent = 0;
+    textoParejas.textContent = 0;
 
     generarCartas();
     mezclarCartas();
@@ -147,7 +167,73 @@ function crearCarta(numero) {
     tablero.append(carta);
 
     // Giro la carta al hacer click
-    carta.addEventListener("click", () => {
-        carta.classList.add("girada");
-    });
+   carta.addEventListener("click", () => seleccionarCarta(carta));
+}
+
+//Se encarga de qué pasa cuando hacés clic en una carta
+function seleccionarCarta(carta) {
+    //condiciones por las que no se podria seleccionar una carta
+    if (bloqueado || carta === primeraCarta || carta.classList.contains("girada")) {
+        return;
+    }
+
+    carta.classList.add("girada");
+
+    //guarda el num de la primer carta, si ya se guardo, guarda la segunda
+    if (primeraCarta === null) {
+        primeraCarta = carta;
+    } else {
+        segundaCarta = carta;
+        movimientos++;
+        textoMovimientos.textContent = movimientos;
+        comprobarPareja();
+    }
+}
+
+//Se encarga de ver si las dos cartas seleccionadas son iguales
+function comprobarPareja() {
+    bloqueado = true; //para que el usuario no pueda seguir seleccionando cartas
+
+    if (primeraCarta.dataset.numero === segundaCarta.dataset.numero) {
+        parejasEncontradas++;
+        textoParejas.textContent = parejasEncontradas;
+        primeraCarta = null;
+        segundaCarta = null;
+        bloqueado = false;
+
+        if (parejasEncontradas === cantidadParejas) {
+    finalizarJuego();
+}
+
+    } else {
+        setTimeout(() => {
+            primeraCarta.classList.remove("girada");
+            segundaCarta.classList.remove("girada");
+
+            primeraCarta = null;
+            segundaCarta = null;
+            bloqueado = false;
+        }, 1000);
+    }
+}
+
+function finalizarJuego() {
+    mensajeResultado.textContent = "¡Ganaste!";
+
+    cambiarPantalla(pantallaJuego, pantallaResultado);
+}
+
+function reiniciarJuego() {
+    modoJuego = "";
+    nombre1 = "";
+    nombre2 = "";
+    tematica = "";
+    cantidadParejas = 0;
+    cartas = [];
+    primeraCarta = null;
+    segundaCarta = null;
+    bloqueado = false;
+    movimientos = 0;
+    parejasEncontradas = 0;
+    cambiarPantalla(pantallaResultado, pantallaModo);
 }
