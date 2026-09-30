@@ -23,11 +23,14 @@ const contenedorOpciones = document.getElementById('contenedor-opciones');
 const mensajeFeedback = document.getElementById('mensaje-feedback');
 const puntajeFinalEl = document.getElementById('puntaje-final');
 const mensajeFinalEl = document.getElementById('mensaje-final');
+const nombreJugadorEl = document.getElementById('nombre-jugador');
+const btnGuardarPuntaje = document.getElementById('btn-guardar-puntaje');
 
 // Event Listeners
 btnIniciar.addEventListener('click', iniciarJuego);
 btnSiguiente.addEventListener('click', siguientePregunta);
 btnReiniciar.addEventListener('click', reiniciarJuego);
+btnGuardarPuntaje.addEventListener('click', guardarPuntaje);
 
 /**
  * Carga los datos del JSON local o repositorio usando Fetch y async/await
@@ -373,6 +376,30 @@ function mostrarResultados() {
     } else {
         mensajeFinalEl.innerText = 'Sigue explorando y aprendiendo más sobre nuestro patrimonio cultural.';
     }
+}
+
+function guardarPuntaje() {
+    const nombre = nombreJugadorEl.value.trim();
+
+    if (nombre === '') {
+        alert('Ingresá tu nombre para guardar el puntaje.');
+        return;
+    }
+
+    const puntajesGuardados =
+        JSON.parse(localStorage.getItem('puntajes') || '[]');
+
+    puntajesGuardados.push({
+        nombre: nombre,
+        puntaje: puntaje
+    });
+
+    puntajesGuardados.sort((a, b) => b.puntaje - a.puntaje);
+
+    localStorage.setItem(
+        'puntajes',
+        JSON.stringify(puntajesGuardados.slice(0, 10))
+    );
 }
 
 function reiniciarJuego() {
