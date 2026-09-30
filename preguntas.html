@@ -25,7 +25,41 @@
             </header>
 
             <!--CONTENIDO-->
-            <main></main>
+            <main>
+                <!-- Pantalla Inicial -->
+                <section id="pantalla-inicio">
+                    <h2>¡Bienvenido a la Trivia Sonidos y Lenguas de Argentina!</h2>
+                    <p>Aprenderás sobre expresiones culturales, paisajes sonoros, lenguas y regiones de nuestro país.</p>
+                    <p>Responderás 10 preguntas con un tiempo límite de 30 segundos por pregunta.</p>
+                    <button id="btn-iniciar" class="btn">Iniciar Juego</button>
+                </section>
+
+                <!-- Pantalla de Pregunta -->
+                <section id="pantalla-juego" style="display: none;">
+                    <div id="encabezado-juego">
+                        <span id="numero-pregunta">Pregunta 1/10</span>
+                        <span id="categoria-pregunta">Categoría</span>
+                        <div id="temporizador">Tiempo: <span id="tiempo-restante">30</span>s</div>
+                    </div>
+
+                    <h3 id="texto-pregunta">Cargando pregunta...</h3>
+
+                    <div id="contenedor-opciones" class="opciones-grid">
+                        <!-- Las opciones se generan dinámicamente -->
+                    </div>
+
+                    <div id="mensaje-feedback" class="feedback"></div>
+                    <button id="btn-siguiente" class="btn" style="display: none;">Siguiente Pregunta</button>
+                </section>
+
+                <!-- Pantalla de Resultados -->
+                <section id="pantalla-resultados" style="display: none;">
+                    <h2>¡Juego Terminado!</h2>
+                    <p>Tu puntaje final es: <span id="puntaje-final">0</span> / 100 puntos</p>
+                    <p id="mensaje-final"></p>
+                    <button id="btn-reiniciar" class="btn">Jugar de Nuevo</button>
+                </section>
+            </main>
             <footer>
                 <hr>
                 <address><p>Página web desarrollada por Milagros Peruzotti y Teodoro Block
@@ -34,5 +68,6 @@
                 <img src="img/logouna.png" width="237" height="93"></address>
             </footer>
         </div>
+        <script src="java/preguntas.js"></script>
     </body>
 </html>

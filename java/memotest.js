@@ -24,6 +24,11 @@ const tablero = document.querySelector("#tablero");
 
 const textoMovimientos = document.querySelector("#movimientos");
 const textoParejas = document.querySelector("#parejas");
+const movimientosGeneral = document.querySelector("#movimientos-general");
+const parejasGeneral = document.querySelector("#parejas-general");
+const textoTurno = document.querySelector("#turno");
+const textoMovimientosJugador = document.querySelector("#movimientos-jugador");
+const textoParejasJugador = document.querySelector("#parejas-jugador");
 
 const pantallaResultado = document.querySelector("#pantalla-resultado");
 const mensajeResultado = document.querySelector("#mensaje-resultado");
@@ -34,6 +39,7 @@ const btnJugarNuevo = document.querySelector("#btn-jugar-nuevo");
 let modoJuego = "";
 let nombre1 = "";
 let nombre2 = "";
+let jugadorActual = 1;
 let tematica = "";
 let cantidadParejas = 0;
 let cartas = [];
@@ -42,6 +48,11 @@ let segundaCarta = null;
 let bloqueado = false; //evita que se puedan seleccionar cartas mientras estamos comprobando las dos anteriores
 let movimientos = 0;
 let parejasEncontradas = 0;
+let parejasJugador1 = 0;
+let parejasJugador2 = 0;
+let movimientosJugador1 = 0;
+let movimientosJugador2 = 0;
+let desempate = false;
 
 // EVENTOS
 
@@ -106,9 +117,27 @@ function iniciarJuego(parejas) {
     
     movimientos = 0;
     parejasEncontradas = 0;
+    jugadorActual = 1;
+    parejasJugador1 = 0;
+    parejasJugador2 = 0;
+    movimientosJugador1 = 0;
+    movimientosJugador2 = 0;
+    desempate = false;
 
     textoMovimientos.textContent = 0;
     textoParejas.textContent = 0;
+
+    if (modoJuego === "multijugador") {
+    movimientosGeneral.style.display = "none";
+    parejasGeneral.style.display = "none";
+} else {
+    movimientosGeneral.style.display = "block";
+    parejasGeneral.style.display = "block";
+}
+
+    actualizarTurno();
+    actualizarMovimientosJugador();
+    actualizarParejasJugador();
 
     generarCartas();
     mezclarCartas();
@@ -186,6 +215,14 @@ function seleccionarCarta(carta) {
         segundaCarta = carta;
         movimientos++;
         textoMovimientos.textContent = movimientos;
+        if (modoJuego === "multijugador") {
+    if (jugadorActual === 1) {
+        movimientosJugador1++;
+    } else {
+        movimientosJugador2++;
+    }
+    actualizarMovimientosJugador();
+}
         comprobarPareja();
     }
 }
@@ -197,6 +234,16 @@ function comprobarPareja() {
     if (primeraCarta.dataset.numero === segundaCarta.dataset.numero) {
         parejasEncontradas++;
         textoParejas.textContent = parejasEncontradas;
+
+         if (modoJuego === "multijugador") {
+            if (jugadorActual === 1) {
+                parejasJugador1++;
+            } else {
+                parejasJugador2++;
+            }
+            actualizarParejasJugador();
+        }
+
         primeraCarta = null;
         segundaCarta = null;
         bloqueado = false;
@@ -212,15 +259,62 @@ function comprobarPareja() {
 
             primeraCarta = null;
             segundaCarta = null;
+
+            jugadorActual = jugadorActual === 1 ? 2 : 1;
+            actualizarTurno();
+
             bloqueado = false;
         }, 1000);
     }
 }
 
+//turnos multijugador
+const actualizarTurno = () => {
+    if (modoJuego === "multijugador") {
+        textoTurno.textContent = `Turno de ${jugadorActual === 1 ? nombre1 : nombre2}`;
+    } else {
+        textoTurno.textContent = "";
+    }
+};
+
+const actualizarMovimientosJugador = () => {
+    if (modoJuego === "multijugador") {
+        textoMovimientosJugador.textContent =
+            `${nombre1}: ${movimientosJugador1} movimientos | ${nombre2}: ${movimientosJugador2} movimientos`;
+    } else {
+        textoMovimientosJugador.textContent = "";
+    }
+};
+
+const actualizarParejasJugador = () => {
+    if (modoJuego === "multijugador") {
+        textoParejasJugador.textContent =
+            `${nombre1}: ${parejasJugador1} parejas | ${nombre2}: ${parejasJugador2} parejas`;
+    } else {
+        textoParejasJugador.textContent = "";
+    }
+};
+
 function finalizarJuego() {
-    mensajeResultado.textContent = "¡Ganaste!";
+    if (modoJuego === "solo") {
+        mensajeResultado.textContent = "¡Ganaste!";
+    } else {
+        if (parejasJugador1 > parejasJugador2) {
+            mensajeResultado.textContent = `¡Ganó ${nombre1}!`;
+        } else if (parejasJugador2 > parejasJugador1) {
+            mensajeResultado.textContent = `¡Ganó ${nombre2}!`;
+        } else {
+            iniciarDesempate();
+        }
+    }
 
     cambiarPantalla(pantallaJuego, pantallaResultado);
+}
+
+function iniciarDesempate() {
+    desempate = true;
+    mensajeResultado.textContent = "¡DESEMPATE!";
+    cambiarPantalla(pantallaJuego, pantallaJuego);
 }
 
 function reiniciarJuego() {
@@ -235,5 +329,10 @@ function reiniciarJuego() {
     bloqueado = false;
     movimientos = 0;
     parejasEncontradas = 0;
+    parejasJugador1 = 0;
+    parejasJugador2 = 0;
+    movimientosJugador1 = 0;
+    movimientosJugador2 = 0;
+    jugadorActual = 1;
     cambiarPantalla(pantallaResultado, pantallaModo);
 }
