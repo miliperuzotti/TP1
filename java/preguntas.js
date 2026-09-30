@@ -54,21 +54,18 @@ async function cargarDatosAPI() {
 function generarPreguntas() {
     preguntasJuego = [];
 
-    // Tipos de plantillas de preguntas basadas en las categorías y campos reales del JSON
+    // Tipos de plantillas de preguntas
     const tiposPreguntas = [
-        // Categoría: Geografía Cultural (usa "provincias")
         {
             categoria: '🗺️ Geografía Cultural',
             propiedad: 'provincias',
             obtenerPregunta: (reg) => `¿A qué provincia o territorio pertenece el registro cultural "${reg.post_title}"?`
         },
-        // Categoría: Paisaje Sonoro (usa "entorno")
         {
             categoria: '🌿 Paisaje Sonoro',
             propiedad: 'entorno',
             obtenerPregunta: (reg) => `¿En qué tipo de entorno fue registrado el sonido de "${reg.post_title}"?`
         },
-        // Categoría: Lenguas de Argentina (usa "lenguas")
         {
             categoria: '🗣️ Lenguas de Argentina',
             propiedad: 'lenguas',
@@ -76,38 +73,50 @@ function generarPreguntas() {
         }
     ];
 
-    // Mezclar los registros completos de la API
+    // Mezclar los registros de la API
     const registrosMezclados = [...registrosAPI].sort(() => 0.5 - Math.random());
-    
+
     for (let reg of registrosMezclados) {
-        if (preguntasJuego.length >= 10) break; // Ya armamos las 10 preguntas
+        if (preguntasJuego.length >= 10) break; // Ya tenemos las 10 preguntas
 
-        // Seleccionar una plantilla aleatoria
-        const plantilla = tiposPreguntas[Math.floor(Math.random() * tiposPreguntas.length)];
-        const respuestaCorrecta = reg[plantilla.propiedad];
+        if (!reg.post_title || reg.post_title.trim() === '') continue;
 
-        // Validar que el registro tenga título y que la respuesta correcta no esté vacía/indefinida
-        if (!reg.post_title || !respuestaCorrecta || respuestaCorrecta.trim() === '') {
-            continue; // Saltar este registro si no tiene el dato necesario
+        // Mezclar las plantillas para intentar con cualquiera disponible
+        const plantillasMezcladas = [...tiposPreguntas].sort(() => 0.5 - Math.random());
+
+        for (let plantilla of plantillasMezcladas) {
+            const respuestaCorrecta = reg[plantilla.propiedad];
+
+            // Validar que el valor sea válido y no sea un arreglo vacío o texto blanco
+            if (!respuestaCorrecta || (Array.isArray(respuestaCorrecta) && respuestaCorrecta.length === 0)) {
+                continue;
+            }
+
+            const textoRespuesta = Array.isArray(respuestaCorrecta) ? respuestaCorrecta.join(', ') : String(respuestaCorrecta).trim();
+
+            if (textoRespuesta === '' || textoRespuesta.toLowerCase() === 'null' || textoRespuesta.toLowerCase() === 'undefined') {
+                continue;
+            }
+
+            // Obtener 3 opciones incorrectas distintas
+            const opcionesIncorrectas = extraerOpcionesUnicas(plantilla.propiedad, textoRespuesta, 3);
+
+            if (opcionesIncorrectas.length < 3) {
+                continue; // Probar con otra plantilla o registro si no hay suficientes distractoras
+            }
+
+            // Armar las 4 opciones y mezclarlas
+            const opcionesMezcladas = [textoRespuesta, ...opcionesIncorrectas].sort(() => 0.5 - Math.random());
+
+            preguntasJuego.push({
+                categoria: plantilla.categoria,
+                pregunta: plantilla.obtenerPregunta(reg),
+                opciones: opcionesMezcladas,
+                respuestaCorrecta: textoRespuesta
+            });
+
+            break; // Pregunta añadida con éxito para este registro, pasar al siguiente
         }
-
-        // Obtener 3 opciones incorrectas únicas que no sean iguales a la respuesta correcta
-        const opcionesIncorrectas = extraerOpcionesUnicas(plantilla.propiedad, respuestaCorrecta, 3);
-
-        // Si no hay suficientes distractoras en el JSON para este campo, saltamos al siguiente registro
-        if (opcionesIncorrectas.length < 3) {
-            continue;
-        }
-
-        // Unir la respuesta correcta con las 3 incorrectas y mezclar aleatoriamente
-        const opcionesMezcladas = [respuestaCorrecta, ...opcionesIncorrectas].sort(() => 0.5 - Math.random());
-
-        preguntasJuego.push({
-            categoria: plantilla.categoria,
-            pregunta: plantilla.obtenerPregunta(reg),
-            opciones: opcionesMezcladas,
-            respuestaCorrecta: respuestaCorrecta
-        });
     }
 }
 
@@ -115,15 +124,31 @@ function generarPreguntas() {
  * Extrae valores únicos válidos del dataset para usarlos como distractoras sin repetir
  */
 function extraerOpcionesUnicas(propiedad, valorCorrecto, cantidadRequerida) {
-    // Filtrar todos los valores de esa propiedad que existan y no sean vacíos ni iguales al correcto
-    const todosLosValores = registrosAPI
-        .map(r => r[propiedad])
-        .filter(val => val && typeof val === 'string' && val.trim() !== '' && val.trim() !== valorCorrecto.trim());
+    const todosLosValores = [];
 
-    // Eliminar duplicados usando Set
-    const valoresUnicos = [...new Set(todosLosValores)];
+    registrosAPI.forEach(r => {
+        const val = r[propiedad];
+        if (val) {
+            if (Array.isArray(val)) {
+                val.forEach(v => todosLosValores.push(String(v).trim()));
+            } else {
+                todosLosValores.push(String(val).trim());
+            }
+        }
+    });
 
-    // Mezclar y tomar exactamente la cantidad requerida
+    // Filtrar vacíos, valores nulos y la respuesta correcta
+    const valoresFiltrados = todosLosValores.filter(v => 
+        v !== '' && 
+        v.toLowerCase() !== 'null' && 
+        v.toLowerCase() !== 'undefined' && 
+        v !== valorCorrecto
+    );
+
+    // Eliminar duplicados
+    const valoresUnicos = [...new Set(valoresFiltrados)];
+
+    // Retornar la cantidad solicitada mezclada
     return valoresUnicos.sort(() => 0.5 - Math.random()).slice(0, cantidadRequerida);
 }
 
