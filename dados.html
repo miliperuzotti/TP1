@@ -27,39 +27,99 @@
             <!--CONTENIDO-->
 <main>
 
-    <div id="dados">
-        <div id="dado1" class="dado">?</div>
-        <div id="dado2" class="dado">?</div>
-        <div id="dado3" class="dado">?</div>
-        <div id="dado4" class="dado">?</div>
+<!-- =========================================
+     EXPLICACIÓN
+     ========================================= -->
+    <div id="explicacion-juego">
+        <h2>Crea tu jugador</h2>
+
+        <p>
+            Tirás los cuatro dados de a uno. La suma de los resultados
+            determina qué jugador de la Selección Argentina aparece.
+            Elegí una de sus características para construir tu propio
+            jugador: ataque, pase o defensa. Repetí el proceso hasta
+            completar las tres características.
+        </p>
     </div>
 
-    <p>Suma: <span id="suma">0</span></p>
+<!-- =========================================
+     JUEGO DE DADOS
+     ========================================= -->
 
-    <button id="tirar">Tirar dado</button>
+<section id="juego-dados">
 
-    <p id="mensaje"></p>
-
-
-    <!-- JUGADOR QUE SALE CON LOS DADOS -->
+    <!-- -----------------------------------------
+         JUGADOR QUE SALE CON LA SUMA DE LOS DADOS
+         ----------------------------------------- -->
     <section id="zona-jugador">
-        <div id="jugador-actual"></div>
+
+        <div id="jugador-actual">
+            <!-- JavaScript coloca acá al jugador -->
+        </div>
+
     </section>
 
 
-    <!-- JUGADOR QUE ESTAMOS CREANDO -->
+    <!-- -----------------------------------------
+         DADOS
+         Cada dado es un botón independiente.
+         ----------------------------------------- -->
+    <section id="zona-dados">
+
+        <div id="contenedor-dados">
+
+            <!-- DADO 1: empieza habilitado -->
+            <button id="dado1" class="dado" type="button">
+                ?
+            </button>
+
+            <!-- Los siguientes empiezan bloqueados -->
+            <button id="dado2" class="dado" type="button" disabled>
+                ?
+            </button>
+
+            <button id="dado3" class="dado" type="button" disabled>
+                ?
+            </button>
+
+            <button id="dado4" class="dado" type="button" disabled>
+                ?
+            </button>
+
+        </div>
+
+        <!-- Suma acumulada -->
+        <p id="texto-suma">
+            Suma: <span id="suma">0</span>
+        </p>
+
+        <!-- Mensajes del juego -->
+        <p id="mensaje"></p>
+
+    </section>
+
+
+    <!-- -----------------------------------------
+         JUGADOR QUE ESTAMOS CREANDO
+         ----------------------------------------- -->
     <section id="jugador-creado">
     </section>
 
 
-    <!-- FORMULARIO -->
+    <!-- -----------------------------------------
+         FORMULARIO
+         ----------------------------------------- -->
     <section id="zona-formulario">
     </section>
 
 
-    <!-- TABLA DE PUNTAJES -->
+    <!-- -----------------------------------------
+         TABLA DE PUNTAJES
+         ----------------------------------------- -->
     <section id="scoreboard">
     </section>
+
+</section>
 
 </main>
             <footer>

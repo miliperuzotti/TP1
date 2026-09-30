@@ -204,3 +204,332 @@ footer img {
 .carta.girada .reverso { 
     transform: rotateY(180deg); 
 }
+
+/* ==================================================
+   JUEGO DE DADOS
+   ================================================== */
+
+
+/* --------------------------------------------------
+   CONTENEDOR GENERAL DEL JUEGO
+   -------------------------------------------------- */
+
+/*
+   Todo el juego se organiza verticalmente:
+
+   jugador
+      ↓
+   botones de características
+      ↓
+   dados
+      ↓
+   información
+*/
+
+#juego-dados {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* --------------------------------------------------
+   ZONA DEL JUGADOR
+   -------------------------------------------------- */
+
+/*
+   Reservamos siempre un espacio para la carta.
+   Aunque todavía no haya ningún jugador,
+   los dados permanecen en el mismo lugar.
+*/
+
+#zona-jugador {
+    width: 100%;
+    min-height: 520px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+}
+
+/* --------------------------------------------------
+   CARTA DEL JUGADOR
+   -------------------------------------------------- */
+
+.carta-jugador {
+    width: 100%;
+    max-width: 400px;
+
+    height: 500px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    margin: 0 auto;
+}
+/* --------------------------------------------------
+   IMAGEN DEL JUGADOR
+   -------------------------------------------------- */
+
+/*
+   La imagen es grande y queda centrada.
+*/
+
+.carta-jugador img {
+    display: block;
+
+    width: 100%;
+    max-width: 350px;
+
+    height: auto;
+
+    margin: 0 auto;
+}
+
+
+/* --------------------------------------------------
+   NOMBRE DEL JUGADOR
+   -------------------------------------------------- */
+
+.carta-jugador h2 {
+    margin: 15px 0 5px 0;
+}
+
+
+/* --------------------------------------------------
+   DORSAL
+   -------------------------------------------------- */
+
+.carta-jugador p {
+    margin: 5px 0 15px 0;
+}
+
+
+/* --------------------------------------------------
+   BOTONES DE CARACTERÍSTICAS
+   -------------------------------------------------- */
+
+.caracteristicas {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: center;
+    align-items: stretch;
+
+    gap: 10px;
+
+    width: 100%;
+}
+
+
+.caracteristicas button {
+    flex: 1;
+
+    min-height: 50px;
+
+    margin: 0;
+    padding: 10px 15px;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* --------------------------------------------------
+   ZONA DE LOS DADOS
+   -------------------------------------------------- */
+
+/*
+   Los dados aparecen DEBAJO de la carta
+   y de los botones de características.
+*/
+
+#zona-dados {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 30px;
+}
+
+
+/* --------------------------------------------------
+   CONTENEDOR DE LOS CUATRO DADOS
+   -------------------------------------------------- */
+
+/*
+   Flexbox coloca los cuatro dados en una fila.
+*/
+
+#contenedor-dados {
+    display: flex;
+
+    flex-direction: row;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 15px;
+}
+
+
+/* --------------------------------------------------
+   DADOS
+   -------------------------------------------------- */
+
+/*
+   Cada dado es un cuadrado.
+   
+   Más adelante podés poner una imagen
+   como fondo de estos botones.
+*/
+
+.dado {
+    width: 80px;
+    height: 80px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    margin: 0;
+
+    font-size: 28px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+/*
+   Los dados que todavía no pueden utilizarse
+   aparecen bloqueados.
+*/
+
+.dado:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* --------------------------------------------------
+   ANIMACIÓN DE LOS DADOS
+   -------------------------------------------------- */
+
+/*
+   Esta clase se agrega momentáneamente
+   cuando se tira un dado.
+*/
+
+.dado.animando {
+    animation: tirarDado 0.5s ease;
+}
+
+
+/*
+   Animación:
+
+   0%   → el dado empieza normal
+   50%  → gira y se agranda ligeramente
+   100% → vuelve a su posición
+*/
+
+@keyframes tirarDado {
+
+    0% {
+        transform: rotate(0deg) scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: rotate(180deg) scale(1.15);
+        opacity: 0.4;
+    }
+
+    100% {
+        transform: rotate(360deg) scale(1);
+        opacity: 1;
+    }
+}
+/* --------------------------------------------------
+   SUMA
+   -------------------------------------------------- */
+
+#texto-suma {
+    margin: 20px 0 5px 0;
+
+    font-size: 18px;
+}
+
+
+/* --------------------------------------------------
+   MENSAJE
+   -------------------------------------------------- */
+
+#mensaje {
+    min-height: 24px;
+
+    margin: 5px 0 20px 0;
+}
+
+
+/* --------------------------------------------------
+   JUGADOR CREADO
+   -------------------------------------------------- */
+
+#jugador-creado {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+
+/* --------------------------------------------------
+   FORMULARIO
+   -------------------------------------------------- */
+
+#zona-formulario {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+
+/* --------------------------------------------------
+   SCOREBOARD
+   -------------------------------------------------- */
+
+#scoreboard {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+}

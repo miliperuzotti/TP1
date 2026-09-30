@@ -240,79 +240,84 @@ let jugadorCreado = {
 
 let scoreboard = [];
 
-
 // ===============================
 // ELEMENTOS DEL HTML
 // ===============================
 
+// Guardamos cada dado por separado.
+// Cada uno es ahora un botón.
 const dado1 = document.getElementById("dado1");
 const dado2 = document.getElementById("dado2");
 const dado3 = document.getElementById("dado3");
 const dado4 = document.getElementById("dado4");
 
+// Elementos relacionados con la suma y los mensajes.
 const suma = document.getElementById("suma");
-
-const botonTirar = document.getElementById("tirar");
-
 const mensaje = document.getElementById("mensaje");
 
+// Zonas donde JavaScript va a mostrar información.
 const jugadorActual = document.getElementById("jugador-actual");
 const jugadorCreadoHTML = document.getElementById("jugador-creado");
 const zonaFormulario = document.getElementById("zona-formulario");
 const scoreboardHTML = document.getElementById("scoreboard");
 
-
 // ===============================
 // TIRAR UN DADO
 // ===============================
 
-function tirarDado() {
+function tirarDado(dado, numeroDado) {
 
-    // No permitir más de 4 dados
-    if (dadosTirados >= MAX_DADOS) {
-        mensaje.textContent = "Ya tiraste los 4 dados. Elegí una característica.";
-        return;
-    }
-
-    // Número aleatorio entre 1 y 6
+    // Generar número aleatorio entre 1 y 6
     const resultado = Math.floor(Math.random() * 6) + 1;
 
-    // Acumular resultado
-    sumaDados += resultado;
+    // Bloquear inmediatamente el dado que acabamos de tirar
+    dado.disabled = true;
 
+    // Comenzar animación
+    dado.classList.add("animando");
+
+    // Actualizar los datos del juego
+    sumaDados += resultado;
     dadosTirados++;
 
-    // Mostrar resultado en el dado correspondiente
-    if (dadosTirados === 1) {
-        dado1.textContent = resultado;
-    }
-
-    if (dadosTirados === 2) {
-        dado2.textContent = resultado;
-    }
-
-    if (dadosTirados === 3) {
-        dado3.textContent = resultado;
-    }
-
-    if (dadosTirados === 4) {
-        dado4.textContent = resultado;
-    }
-
-    // Mostrar suma
     suma.textContent = sumaDados;
 
-    // Mostrar jugador correspondiente
-    mostrarJugador();
+    // Esperar a que termine la animación
+    setTimeout(function() {
 
-    // Si ya tiró los 4, no puede seguir tirando
-    if (dadosTirados === MAX_DADOS) {
-        botonTirar.disabled = true;
-        mensaje.textContent = "Llegaste al máximo de 4 dados. Elegí una característica.";
-    }
+        // Mostrar el resultado
+        dado.textContent = resultado;
+
+        // Sacar la animación
+        dado.classList.remove("animando");
+
+        // Mostrar el jugador correspondiente
+        mostrarJugador();
+
+        // Habilitar únicamente el siguiente dado
+        if (numeroDado === 1) {
+            dado2.disabled = false;
+            mensaje.textContent = "Ahora podés tirar el dado 2.";
+        }
+
+        else if (numeroDado === 2) {
+            dado3.disabled = false;
+            mensaje.textContent = "Ahora podés tirar el dado 3.";
+        }
+
+        else if (numeroDado === 3) {
+            dado4.disabled = false;
+            mensaje.textContent = "Ahora podés tirar el dado 4.";
+        }
+
+        // Si ya tiramos los cuatro
+        else if (numeroDado === 4) {
+            mensaje.textContent =
+                "Llegaste al máximo de 4 dados. Elegí una característica.";
+        }
+
+    }, 500);
 }
-
-
 // ===============================
 // MOSTRAR JUGADOR
 // ===============================
@@ -403,26 +408,32 @@ function actualizarJugadorCreado() {
     jugadorCreadoHTML.innerHTML = `
         <h2>Tu jugador</h2>
 
-        <p>Ataque: ${
-            jugadorCreado.ataque !== null
-            ? jugadorCreado.ataque
-            : "-"
-        }</p>
+        <div class="estadisticas-creadas">
 
-        <p>Pase: ${
-            jugadorCreado.pase !== null
-            ? jugadorCreado.pase
-            : "-"
-        }</p>
+            <p>
+                <strong>Ataque</strong><br>
+                ${jugadorCreado.ataque !== null
+                    ? jugadorCreado.ataque
+                    : "-"}
+            </p>
 
-        <p>Defensa: ${
-            jugadorCreado.defensa !== null
-            ? jugadorCreado.defensa
-            : "-"
-        }</p>
+            <p>
+                <strong>Pase</strong><br>
+                ${jugadorCreado.pase !== null
+                    ? jugadorCreado.pase
+                    : "-"}
+            </p>
+
+            <p>
+                <strong>Defensa</strong><br>
+                ${jugadorCreado.defensa !== null
+                    ? jugadorCreado.defensa
+                    : "-"}
+            </p>
+
+        </div>
     `;
 }
-
 
 // ===============================
 // COMPROBAR SI ESTÁ COMPLETO
@@ -437,30 +448,52 @@ function jugadorCompleto() {
     );
 }
 
-
 // ===============================
 // REINICIAR DADOS
 // ===============================
 
 function reiniciarDados() {
 
+    // Reiniciamos la suma.
     sumaDados = 0;
+
+    // Reiniciamos la cantidad de dados tirados.
     dadosTirados = 0;
+
+
+    // -----------------------------------------
+    // VOLVER TODOS LOS DADOS A "?"
+    // -----------------------------------------
 
     dado1.textContent = "?";
     dado2.textContent = "?";
     dado3.textContent = "?";
     dado4.textContent = "?";
 
+
+    // Reiniciamos la suma visual.
     suma.textContent = "0";
 
-    botonTirar.disabled = false;
 
+    // -----------------------------------------
+    // BLOQUEAR LOS DADOS
+    // -----------------------------------------
+
+    // El primero siempre vuelve a estar habilitado.
+    dado1.disabled = false;
+
+    // Los demás esperan su turno.
+    dado2.disabled = true;
+    dado3.disabled = true;
+    dado4.disabled = true;
+
+
+    // Limpiamos el jugador que estaba apareciendo.
     jugadorActual.innerHTML = "";
 
-    mensaje.textContent = "Tirá un dado para buscar otra característica.";
+    mensaje.textContent =
+        "Tirá el dado 1 para buscar otra característica.";
 }
-
 
 // ===============================
 // FINALIZAR CREACIÓN
@@ -468,7 +501,11 @@ function reiniciarDados() {
 
 function finalizarJuego() {
 
-    botonTirar.disabled = true;
+    // Bloquear todos los dados
+    dado1.disabled = true;
+    dado2.disabled = true;
+    dado3.disabled = true;
+    dado4.disabled = true;
 
     jugadorActual.innerHTML = "";
 
@@ -479,8 +516,6 @@ function finalizarJuego() {
 
     mostrarFormulario(puntaje);
 }
-
-
 // ===============================
 // MOSTRAR FORMULARIO
 // ===============================
@@ -622,7 +657,24 @@ function nuevaPartida() {
 
 
 // ===============================
-// EVENTO DEL BOTÓN
+// EVENTOS DE LOS DADOS
 // ===============================
 
-botonTirar.addEventListener("click", tirarDado);
+// Cada botón llama a la misma función,
+// pero le indica qué dado se está tirando.
+
+dado1.addEventListener("click", function() {
+    tirarDado(dado1, 1);
+});
+
+dado2.addEventListener("click", function() {
+    tirarDado(dado2, 2);
+});
+
+dado3.addEventListener("click", function() {
+    tirarDado(dado3, 3);
+});
+
+dado4.addEventListener("click", function() {
+    tirarDado(dado4, 4);
+});
