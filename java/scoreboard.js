@@ -5,7 +5,6 @@ const puntajes = JSON.parse(
 const lista = document.getElementById('lista-puntajes');
 
 puntajes.forEach((jugador, indice) => {
-
     const fila = document.createElement('tr');
 
     fila.innerHTML = `
@@ -15,4 +14,19 @@ puntajes.forEach((jugador, indice) => {
     `;
 
     lista.appendChild(fila);
+});
+
+const btnBorrarPuntajes =
+    document.getElementById('btn-borrar-puntajes');
+
+btnBorrarPuntajes.addEventListener('click', () => {
+
+    const confirmar = confirm(
+        '¿Seguro que querés borrar todos los puntajes?'
+    );
+
+    if (confirmar) {
+        localStorage.removeItem('puntajes');
+        location.reload();
+    }
 });
