@@ -53,72 +53,78 @@ async function cargarDatosAPI() {
  */
 function generarPreguntas() {
     preguntasJuego = [];
-    
-    // Filtrar registros que tengan datos completos
-    const registrosValidos = registrosAPI.filter(r => r.post_title && r.provincias && r.entorno);
 
-    // Tipos de plantillas de preguntas basadas en las categorías
+    // Tipos de plantillas de preguntas basadas en las categorías y campos reales del JSON
     const tiposPreguntas = [
-        // Categoría: Geografía Cultural
-        (reg) => ({
+        // Categoría: Geografía Cultural (usa "provincias")
+        {
             categoria: '🗺️ Geografía Cultural',
-            pregunta: `¿A qué provincia o territorio pertenece el registro cultural "${reg.post_title}"?`,
-            respuestaCorrecta: reg.provincias,
-            obtenerOpcionesIncorrectas: () => extraerOpcionesUnicas('provincias', reg.provincias)
-        }),
-        // Categoría: Paisaje Sonoro
-        (reg) => ({
+            propiedad: 'provincias',
+            obtenerPregunta: (reg) => `¿A qué provincia o territorio pertenece el registro cultural "${reg.post_title}"?`
+        },
+        // Categoría: Paisaje Sonoro (usa "entorno")
+        {
             categoria: '🌿 Paisaje Sonoro',
-            pregunta: `¿En qué tipo de entorno fue registrado el sonido de "${reg.post_title}"?`,
-            respuestaCorrecta: reg.entorno,
-            obtenerOpcionesIncorrectas: () => extraerOpcionesUnicas('entorno', reg.entorno)
-        }),
-        // Categoría: Lenguas
-        (reg) => ({
+            propiedad: 'entorno',
+            obtenerPregunta: (reg) => `¿En qué tipo de entorno fue registrado el sonido de "${reg.post_title}"?`
+        },
+        // Categoría: Lenguas de Argentina (usa "lenguas")
+        {
             categoria: '🗣️ Lenguas de Argentina',
-            pregunta: `¿Con qué lengua o grupo lingüístico se vincula el registro "${reg.post_title}"?`,
-            respuestaCorrecta: reg.lenguas || 'Español / Lenguas Indígenas',
-            obtenerOpcionesIncorrectas: () => extraerOpcionesUnicas('lenguas', reg.lenguas || 'Español')
-        })
+            propiedad: 'lenguas',
+            obtenerPregunta: (reg) => `¿Con qué lengua o grupo lingüístico se vincula el registro "${reg.post_title}"?`
+        }
     ];
 
-    // Mezclar los registros y seleccionar 10
-    const registrosMezclados = [...registrosValidos].sort(() => 0.5 - Math.random());
-    const seleccionados = registrosMezclados.slice(0, 10);
+    // Mezclar los registros completos de la API
+    const registrosMezclados = [...registrosAPI].sort(() => 0.5 - Math.random());
+    
+    for (let reg of registrosMezclados) {
+        if (preguntasJuego.length >= 10) break; // Ya armamos las 10 preguntas
 
-    seleccionados.forEach(reg => {
-        // Elegir una plantilla aleatoria para cada pregunta
-        const creadorPregunta = tiposPreguntas[Math.floor(Math.random() * tiposPreguntas.length)];
-        const configPregunta = creadorPregunta(reg);
+        // Seleccionar una plantilla aleatoria
+        const plantilla = tiposPreguntas[Math.floor(Math.random() * tiposPreguntas.length)];
+        const respuestaCorrecta = reg[plantilla.propiedad];
 
-        const incorrectas = configPregunta.obtenerOpcionesIncorrectas();
-        
-        // Unir respuesta correcta con 3 incorrectas y mezclar
-        let opciones = [configPregunta.respuestaCorrecta, ...incorrectas.slice(0, 3)];
-        
-        // Asegurar que haya 4 opciones
-        while (opciones.length < 4) {
-            opciones.push('Opción Alternativa');
+        // Validar que el registro tenga título y que la respuesta correcta no esté vacía/indefinida
+        if (!reg.post_title || !respuestaCorrecta || respuestaCorrecta.trim() === '') {
+            continue; // Saltar este registro si no tiene el dato necesario
         }
-        opciones = opciones.sort(() => 0.5 - Math.random());
+
+        // Obtener 3 opciones incorrectas únicas que no sean iguales a la respuesta correcta
+        const opcionesIncorrectas = extraerOpcionesUnicas(plantilla.propiedad, respuestaCorrecta, 3);
+
+        // Si no hay suficientes distractoras en el JSON para este campo, saltamos al siguiente registro
+        if (opcionesIncorrectas.length < 3) {
+            continue;
+        }
+
+        // Unir la respuesta correcta con las 3 incorrectas y mezclar aleatoriamente
+        const opcionesMezcladas = [respuestaCorrecta, ...opcionesIncorrectas].sort(() => 0.5 - Math.random());
 
         preguntasJuego.push({
-            categoria: configPregunta.categoria,
-            pregunta: configPregunta.pregunta,
-            opciones: opciones,
-            respuestaCorrecta: configPregunta.respuestaCorrecta
+            categoria: plantilla.categoria,
+            pregunta: plantilla.obtenerPregunta(reg),
+            opciones: opcionesMezcladas,
+            respuestaCorrecta: respuestaCorrecta
         });
-    });
+    }
 }
 
 /**
- * Extrae valores únicos del dataset para usarlos como distractores
+ * Extrae valores únicos válidos del dataset para usarlos como distractoras sin repetir
  */
-function extraerOpcionesUnicas(propiedad, valorExcluido) {
+function extraerOpcionesUnicas(propiedad, valorCorrecto, cantidadRequerida) {
+    // Filtrar todos los valores de esa propiedad que existan y no sean vacíos ni iguales al correcto
     const todosLosValores = registrosAPI
         .map(r => r[propiedad])
-        .filter(val => val && val !== valorExcluido && val !== '');
-    return [...new Set(todosLosValores)].sort(() => 0.5 - Math.random());
+        .filter(val => val && typeof val === 'string' && val.trim() !== '' && val.trim() !== valorCorrecto.trim());
+
+    // Eliminar duplicados usando Set
+    const valoresUnicos = [...new Set(todosLosValores)];
+
+    // Mezclar y tomar exactamente la cantidad requerida
+    return valoresUnicos.sort(() => 0.5 - Math.random()).slice(0, cantidadRequerida);
 }
 
 /**
