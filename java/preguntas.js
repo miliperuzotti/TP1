@@ -79,22 +79,29 @@ function generarPreguntas() {
     for (let reg of registrosMezclados) {
         if (preguntasJuego.length >= 10) break; // Ya tenemos las 10 preguntas
 
-        if (!reg.post_title || reg.post_title.trim() === '') continue;
+        if (!reg.post_title || String(reg.post_title).trim() === '') continue;
 
         // Mezclar las plantillas para intentar con cualquiera disponible
         const plantillasMezcladas = [...tiposPreguntas].sort(() => 0.5 - Math.random());
 
         for (let plantilla of plantillasMezcladas) {
-            const respuestaCorrecta = reg[plantilla.propiedad];
+            let datoOriginal = reg[plantilla.propiedad];
 
-            // Validar que el valor sea válido y no sea un arreglo vacío o texto blanco
-            if (!respuestaCorrecta || (Array.isArray(respuestaCorrecta) && respuestaCorrecta.length === 0)) {
-                continue;
-            }
+            // Validar que el valor exista
+            if (datoOriginal === null || datoOriginal === undefined) continue;
 
-            const textoRespuesta = Array.isArray(respuestaCorrecta) ? respuestaCorrecta.join(', ') : String(respuestaCorrecta).trim();
+            // Convertir arreglos o cualquier tipo a String seguro
+            let textoRespuesta = Array.isArray(datoOriginal) 
+                ? datoOriginal.join(', ') 
+                : String(datoOriginal);
 
-            if (textoRespuesta === '' || textoRespuesta.toLowerCase() === 'null' || textoRespuesta.toLowerCase() === 'undefined') {
+            textoRespuesta = textoRespuesta.trim();
+
+            if (
+                textoRespuesta === '' || 
+                textoRespuesta.toLowerCase() === 'null' || 
+                textoRespuesta.toLowerCase() === 'undefined'
+            ) {
                 continue;
             }
 
@@ -102,7 +109,7 @@ function generarPreguntas() {
             const opcionesIncorrectas = extraerOpcionesUnicas(plantilla.propiedad, textoRespuesta, 3);
 
             if (opcionesIncorrectas.length < 3) {
-                continue; // Probar con otra plantilla o registro si no hay suficientes distractoras
+                continue; // Probar con otra plantilla si no hay suficientes opciones
             }
 
             // Armar las 4 opciones y mezclarlas
@@ -115,7 +122,7 @@ function generarPreguntas() {
                 respuestaCorrecta: textoRespuesta
             });
 
-            break; // Pregunta añadida con éxito para este registro, pasar al siguiente
+            break; // Pregunta añadida con éxito, pasar al siguiente registro
         }
     }
 }
@@ -128,7 +135,7 @@ function extraerOpcionesUnicas(propiedad, valorCorrecto, cantidadRequerida) {
 
     registrosAPI.forEach(r => {
         const val = r[propiedad];
-        if (val) {
+        if (val !== null && val !== undefined) {
             if (Array.isArray(val)) {
                 val.forEach(v => todosLosValores.push(String(v).trim()));
             } else {
@@ -137,6 +144,20 @@ function extraerOpcionesUnicas(propiedad, valorCorrecto, cantidadRequerida) {
         }
     });
 
+    // Filtrar vacíos, nulos y la respuesta correcta
+    const valoresFiltrados = todosLosValores.filter(v => 
+        v !== '' && 
+        v.toLowerCase() !== 'null' && 
+        v.toLowerCase() !== 'undefined' && 
+        v.toLowerCase() !== valorCorrecto.toLowerCase()
+    );
+
+    // Eliminar duplicados usando Set
+    const valoresUnicos = [...new Set(valoresFiltrados)];
+
+    // Retornar la cantidad solicitada mezclada
+    return valoresUnicos.sort(() => 0.5 - Math.random()).slice(0, cantidadRequerida);
+}
     // Filtrar vacíos, valores nulos y la respuesta correcta
     const valoresFiltrados = todosLosValores.filter(v => 
         v !== '' && 
