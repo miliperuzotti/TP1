@@ -158,20 +158,6 @@ function extraerOpcionesUnicas(propiedad, valorCorrecto, cantidadRequerida) {
     // Retornar la cantidad solicitada mezclada
     return valoresUnicos.sort(() => 0.5 - Math.random()).slice(0, cantidadRequerida);
 }
-    // Filtrar vacíos, valores nulos y la respuesta correcta
-    const valoresFiltrados = todosLosValores.filter(v => 
-        v !== '' && 
-        v.toLowerCase() !== 'null' && 
-        v.toLowerCase() !== 'undefined' && 
-        v !== valorCorrecto
-    );
-
-    // Eliminar duplicados
-    const valoresUnicos = [...new Set(valoresFiltrados)];
-
-    // Retornar la cantidad solicitada mezclada
-    return valoresUnicos.sort(() => 0.5 - Math.random()).slice(0, cantidadRequerida);
-}
 
 /**
  * Inicia la partida
