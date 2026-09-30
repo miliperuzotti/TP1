@@ -40,12 +40,37 @@ async function cargarDatosAPI() {
             throw new Error(`Error en la solicitud: ${respuesta.status}`);
         }
         const datos = await respuesta.json();
-        // Accedemos al array de registros
+        // Accedemos al array de registros y decodificamos entidades HTML
+        // (por ejemplo, &#8211; -> –) para que se muestren correctamente.
         registrosAPI = datos.records || datos;
+        registrosAPI = registrosAPI.map(reg => {
+            const registroDecodificado = {};
+            Object.entries(reg).forEach(([clave, valor]) => {
+                if (Array.isArray(valor)) {
+                    registroDecodificado[clave] = valor.map(v =>
+                        typeof v === 'string' ? decodificarHTML(v) : v
+                    );
+                } else if (typeof valor === 'string') {
+                    registroDecodificado[clave] = decodificarHTML(valor);
+                } else {
+                    registroDecodificado[clave] = valor;
+                }
+            });
+            return registroDecodificado;
+        });
     } catch (error) {
         console.error('Error al cargar la API:', error);
         textoPreguntaEl.innerText = 'Ocurrió un error al cargar las preguntas. Intenta recargar la página.';
     }
+}
+
+/**
+ * Convierte entidades HTML (&amp;, &#8211;, &quot;, etc.) a texto normal.
+ */
+function decodificarHTML(texto) {
+    const elemento = document.createElement('textarea');
+    elemento.innerHTML = String(texto);
+    return elemento.value;
 }
 
 /**
