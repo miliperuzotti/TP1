@@ -68,9 +68,44 @@ async function cargarDatosAPI() {
  * Convierte entidades HTML (&amp;, &#8211;, &quot;, etc.) a texto normal.
  */
 function decodificarHTML(texto) {
-    const elemento = document.createElement('textarea');
-    elemento.innerHTML = String(texto);
-    return elemento.value;
+    // La API devuelve algunas cadenas con entidades HTML, por ejemplo
+    // "&#8211;" en lugar de "–". Las decodificamos explícitamente
+    // para que se vean correctamente tanto en preguntas como en opciones.
+    let resultado = String(texto);
+
+    // Decodificar entidades numéricas decimales y hexadecimales.
+    resultado = resultado.replace(/&#(\d+);/g, (_, codigo) => {
+        const numero = Number(codigo);
+        return Number.isFinite(numero) ? String.fromCodePoint(numero) : _;
+    });
+    resultado = resultado.replace(/&#x([0-9a-f]+);/gi, (_, codigo) => {
+        const numero = parseInt(codigo, 16);
+        return Number.isFinite(numero) ? String.fromCodePoint(numero) : _;
+    });
+
+    // Entidades HTML con nombre que pueden aparecer en la API.
+    const entidades = {
+        '&amp;': '&',
+        '&quot;': '\"',
+        '&#34;': '\"',
+        '&apos;': "'",
+        '&#39;': "'",
+        '&lt;': '<',
+        '&gt;': '>',
+        '&nbsp;': ' ',
+        '&ndash;': '–',
+        '&mdash;': '—',
+        '&rsquo;': '’',
+        '&lsquo;': '‘',
+        '&rdquo;': '”',
+        '&ldquo;': '“',
+    };
+
+    resultado = resultado.replace(/&(?:amp|quot|apos|lt|gt|nbsp|ndash|mdash|rsquo|lsquo|rdquo|ldquo);|&#(?:34|39);/gi, entidad =>
+        entidades[entidad.toLowerCase()] ?? entidad
+    );
+
+    return resultado;
 }
 
 /**
