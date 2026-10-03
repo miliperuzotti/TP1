@@ -9,3 +9,4 @@ Registro
 - 21 Septiembre:
   Se planteó la lógica de los juegos, con sus posibles resoluciones en Javascript y se discutieron cuestiones de diseño
   
+- 28 Septiembre:

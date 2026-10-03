@@ -47,6 +47,88 @@ main {
     text-align: center;
 }
 
+/* ==================================================
+   INDEX
+   ================================================== */
+
+
+
+/* ---------- SELECCIÓN DE JUEGOS INDEX ---------- */
+
+#contenedorJuegos {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    gap: 1.5rem;
+
+    width: 90%;
+    max-width: 75rem;
+    margin: 2rem auto;
+}
+
+/* ---------- BOTONES DE LOS JUEGOS ---------- */
+
+#contenedorJuegos .boton-juego {
+    display: flex;
+    flex: 1 1 0;
+    min-width: 0;
+    aspect-ratio: 1 / 1;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 1rem;
+    box-sizing: border-box;
+
+    background-color: #333;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 0.75rem;
+    overflow: hidden;
+
+    transition: transform 0.2s ease;
+}
+
+#contenedorJuegos .boton-juego h2 {
+    width: 100%;
+    margin: 0;
+    padding: 1rem;
+
+    box-sizing: border-box;
+    font-size: 1.5rem;
+    color: white;
+    text-align: center;
+
+    overflow-wrap: break-word;
+    background-color: rgba(0, 0, 0, 0.65);
+    border-radius: 0.5rem;
+}
+
+/* ---------- EFECTO AL PASAR EL CURSOR ---------- */
+
+#contenedorJuegos .boton-juego:hover {
+    transform: scale(1.03);
+}
+
+/* ---------- IMÁGENES DE CADA JUEGO ---------- */
+
+#contenedorJuegos .boton-memotest {
+    background-image: url("/img/imageMemotest.jpg");
+}
+
+#contenedorJuegos .boton-dados {
+    background-image: url("/img/imagenFutbol.jpg");
+}
+
+#contenedorJuegos .boton-preguntas {
+    background-image: url("/img/imagenAPI.jpg");
+}
 
 /* ---------- PANTALLAS ---------- */
 
@@ -214,17 +296,6 @@ footer img {
    CONTENEDOR GENERAL DEL JUEGO
    -------------------------------------------------- */
 
-/*
-   Todo el juego se organiza verticalmente:
-
-   jugador
-      ↓
-   botones de características
-      ↓
-   dados
-      ↓
-   información
-*/
 
 #juego-dados {
     width: 100%;
