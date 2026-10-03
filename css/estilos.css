@@ -130,6 +130,10 @@ main {
     background-image: url("/img/imagenAPI.jpg");
 }
 
+/* --------------------------------------------------
+   JUEGO CARTAS MEMOTEST
+   -------------------------------------------------- */
+
 /* ---------- PANTALLAS ---------- */
 
 /*
@@ -270,7 +274,7 @@ footer img {
     
 }
 
-.frente img {
+.frente img, .reverso img {
     width: 100%;
     height: 100%;
 }

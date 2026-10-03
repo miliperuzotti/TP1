@@ -186,6 +186,7 @@ function iniciarJuego(parejas) {
     generarCartas();
     mezclarCartas();
     mostrarCartas();
+    actualizarReversos();
 
     cambiarPantalla(pantallaDificultad, pantallaJuego);
 }
@@ -216,38 +217,49 @@ function mostrarCartas() {
 
 
 function crearCarta(numero) {
-    // Creo la carta
     const carta = document.createElement("div");
 
-    // Creo las dos caras
     const frente = document.createElement("div");
     const reverso = document.createElement("div");
 
-    // Creo la imagen del frente
     const imagen = document.createElement("img");
+    const imagenReverso = document.createElement("img");
 
-    // Agrego las clases
     carta.classList.add("carta");
     frente.classList.add("frente");
     reverso.classList.add("reverso");
 
-    // Guardo el número de la pareja
     carta.dataset.numero = numero;
 
-    // Indico qué imagen tiene la carta
     imagen.src = "img/memotest/" + tematica + "/" + numero + ".jpg";
 
-    // Agrego la imagen al frente
     frente.append(imagen);
+    reverso.append(imagenReverso);
 
-    // Agrego las dos caras a la carta
     carta.append(frente, reverso);
     tablero.append(carta);
 
-    // Giro la carta al hacer click
     carta.addEventListener("click", () => seleccionarCarta(carta));
 }
 
+function actualizarReversos() {
+
+    let imagenReverso;
+
+    if (modoJuego === "solo") {
+        imagenReverso = "img/memotest/reversos/solo.jpg";
+    } else if (jugadorActual === 1) {
+        imagenReverso = "img/memotest/reversos/jugador1.jpg";
+    } else {
+        imagenReverso = "img/memotest/reversos/jugador2.jpg";
+    }
+
+    const reversos = document.querySelectorAll(".reverso img");
+
+    reversos.forEach((imagen) => {
+        imagen.src = imagenReverso;
+    });
+}
 
 // Se encarga de qué pasa cuando hacés clic en una carta
 function seleccionarCarta(carta) {
@@ -340,6 +352,7 @@ function comprobarPareja() {
         ) {
             jugadorActual = jugadorActual === 1 ? 2 : 1;
             actualizarTurno();
+            actualizarReversos();
         }
 
         // Si ambos jugadores llegaron al máximo, termina el juego
@@ -373,6 +386,7 @@ function comprobarPareja() {
             // En multijugador, cambia el turno cuando no hay pareja
             jugadorActual = jugadorActual === 1 ? 2 : 1;
             actualizarTurno();
+            actualizarReversos();
 
             // Si ambos jugadores llegaron al máximo, termina el juego
             if (
