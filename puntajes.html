@@ -26,8 +26,11 @@
 
             <!--CONTENIDO-->
             <main>
-                 <h2>Tabla de Puntajes</h2>
+                <main>
 
+    <h2>Tabla de Puntajes</h2>
+
+    <!-- Tabla djuego seleccion-->
     <table id="tabla-puntajes">
         <thead>
             <tr>
@@ -44,6 +47,28 @@
     <button id="btn-borrar-puntajes" class="btn">
         Borrar puntajes
     </button>
+
+
+    <h2>Tabla de Puntajes - Memotest</h2>
+
+    <table id="tabla-puntajes-memotest">
+        <thead>
+            <tr>
+                <th>Posición</th>
+                <th>Jugador</th>
+                <th>Parejas</th>
+            </tr>
+        </thead>
+
+        <tbody id="lista-puntajes-memotest">
+        </tbody>
+    </table>
+
+    <button id="btn-borrar-puntajes-memotest" class="btn">
+        Borrar puntajes de Memotest
+    </button>
+
+</main>
             </main>
             <footer>
                 <hr>
@@ -54,5 +79,6 @@
             </footer>
         </div>
         <script src="java/scoreboard.js"></script>
+        <script src="java/scoreboardMemotest.js"></script>
     </body>
 </html>
