@@ -279,10 +279,6 @@ footer img {
     height: 100%;
 }
 
-.reverso {
-     background-color: black;
-}
-
 .carta.girada .frente { 
     transform: rotateY(0deg); 
 } 
