@@ -576,12 +576,28 @@ function mostrarFormulario(puntaje) {
             puntaje: puntaje
         };
 
-        scoreboard.push(nuevoJugador);
 
-        mostrarScoreboard();
+        // Recuperamos los resultados anteriores del juego de dados.
+        // Si todavía no hay resultados, usamos un array vacío.
+        const puntajesGuardados = JSON.parse(
+            localStorage.getItem("puntajesDados") || "[]"
+        );
 
+        // Agregamos el jugador recién creado.
+        puntajesGuardados.push(nuevoJugador);
+
+        // Guardamos todos los resultados en el navegador.
+        localStorage.setItem(
+            "puntajesDados",
+            JSON.stringify(puntajesGuardados)
+        );
+
+        // Avisamos que el resultado se guardó correctamente.
+        mensaje.textContent =
+            "¡Puntaje guardado! Podés verlo en la tabla de puntajes.";
+
+        // Quitamos el formulario y mostramos la opción de volver a jugar.
         formulario.remove();
-
         mostrarBotonNuevaPartida();
     });
 }

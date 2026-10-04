@@ -378,28 +378,43 @@ function mostrarResultados() {
     }
 }
 
+
 function guardarPuntaje() {
+
+    // Obtenemos el nombre escrito por el usuario.
     const nombre = nombreJugadorEl.value.trim();
 
+    // No guardamos el resultado si falta el nombre.
     if (nombre === '') {
         alert('Ingresá tu nombre para guardar el puntaje.');
         return;
     }
 
-    const puntajesGuardados =
-        JSON.parse(localStorage.getItem('puntajes') || '[]');
+    // Recuperamos los resultados anteriores del juego de preguntas.
+    const puntajesGuardados = JSON.parse(
+        localStorage.getItem("puntajesPreguntas") || "[]"
+    );
 
+    // Agregamos el resultado de esta partida.
     puntajesGuardados.push({
         nombre: nombre,
         puntaje: puntaje
     });
 
+    // Ordenamos los resultados de mayor a menor.
     puntajesGuardados.sort((a, b) => b.puntaje - a.puntaje);
 
+    // Guardamos los diez mejores resultados.
     localStorage.setItem(
-        'puntajes',
+        "puntajesPreguntas",
         JSON.stringify(puntajesGuardados.slice(0, 10))
     );
+
+    // Confirmamos que se guardó el resultado.
+    alert("¡Puntaje guardado correctamente!");
+
+    // Evitamos que se envíe varias veces el mismo resultado.
+    btnGuardarPuntaje.disabled = true;
 }
 
 function reiniciarJuego() {
