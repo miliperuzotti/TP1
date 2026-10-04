@@ -1,219 +1,421 @@
+/* ==================================================
+   ESTILOS GENERALES
+   ================================================== */
+
 * {
     box-sizing: border-box;
 }
 
+:root {
+    --crema: #FFF9E8;
+    --celeste: #4F9FCC;
+    --celeste-claro: #DCEFF8;
+    --azul: #173B52;
+    --blanco: #FFFFFF;
+    --gris: #5F6B73;
+    --borde: #D7E3E8;
+}
+
+html {
+    min-height: 100%;
+}
+
 body {
+    min-height: 100vh;
     margin: 0;
+
+    background-color: var(--crema);
+    color: var(--azul);
+
     font-family: Arial, sans-serif;
+    line-height: 1.5;
 }
 
 #contenedor {
+    min-height: 100vh;
+
     display: flex;
     flex-direction: column;
 }
 
-/* ---------- NAVEGACIÓN ---------- */
+main {
+    flex: 1;
+
+    width: 100%;
+    max-width: 1200px;
+
+    margin: 0 auto;
+    padding: 40px 25px 60px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+}
+
+
+/* ==================================================
+   NAVEGACIÓN
+   ================================================== */
+
+nav {
+    width: 100%;
+
+    background-color: var(--celeste);
+
+    box-shadow: 0 2px 8px rgba(23, 59, 82, 0.15);
+}
 
 nav ul {
     display: flex;
     flex-wrap: wrap;
+
     justify-content: center;
+    align-items: center;
+
+    gap: 5px;
+
     margin: 0;
-    padding: 20px;
-    gap: 20px;
+    padding: 12px 20px;
+
     list-style: none;
 }
 
+nav li {
+    margin: 0;
+}
+
 nav a {
+    display: block;
+
+    padding: 10px 15px;
+
+    color: var(--blanco);
     text-decoration: none;
+    font-weight: bold;
+
+    border-radius: 6px;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.18);
+    transform: translateY(-1px);
 }
 
 
-/* ---------- TÍTULO ---------- */
+/* ==================================================
+   TÍTULOS
+   ================================================== */
 
 header h1 {
-    text-align: center;
-    margin: 30px 0;
+    margin: 35px 0 10px;
+
+    color: var(--azul);
+
+    font-size: 2.3rem;
+    letter-spacing: 1px;
+}
+
+main h2 {
+    margin-top: 0;
+
+    color: var(--azul);
+}
+
+main h3 {
+    color: var(--azul);
 }
 
 
-/* ---------- CONTENIDO ---------- */
+/* ==================================================
+   BOTONES GENERALES
+   ================================================== */
 
-main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-    text-align: center;
+button,
+.btn {
+    display: inline-block;
+
+    padding: 11px 22px;
+
+    border: none;
+    border-radius: 7px;
+
+    background-color: var(--celeste);
+    color: var(--blanco);
+
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: bold;
+
+    cursor: pointer;
+    text-decoration: none;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
+
+button:hover,
+.btn:hover {
+    background-color: #3E89B4;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 4px 10px rgba(23, 59, 82, 0.15);
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+
+    transform: none;
+    box-shadow: none;
+}
+
+
+/* ==================================================
+   INPUTS
+   ================================================== */
+
+input {
+    padding: 10px 12px;
+
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+
+    background-color: var(--blanco);
+    color: var(--azul);
+
+    font-family: inherit;
+    font-size: 1rem;
+
+    outline: none;
+}
+
+input:focus {
+    border-color: var(--celeste);
+
+    box-shadow: 0 0 0 3px rgba(79, 159, 204, 0.15);
+}
+
 
 /* ==================================================
    INDEX
    ================================================== */
 
-
-
-/* ---------- SELECCIÓN DE JUEGOS INDEX ---------- */
-
 #contenedorJuegos {
     display: flex;
     flex-direction: row;
+
     justify-content: center;
     align-items: stretch;
-    gap: 1.5rem;
 
-    width: 90%;
-    max-width: 75rem;
-    margin: 2rem auto;
+    gap: 25px;
+
+    width: 100%;
+    max-width: 1100px;
+
+    margin: 25px auto;
 }
 
-/* ---------- BOTONES DE LOS JUEGOS ---------- */
+
+/* ---------- TARJETAS DE JUEGO ---------- */
 
 #contenedorJuegos .boton-juego {
+    position: relative;
+
     display: flex;
-    flex: 1 1 0;
+    flex: 1;
+
     min-width: 0;
     aspect-ratio: 1 / 1;
 
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
 
-    padding: 1rem;
-    box-sizing: border-box;
+    padding: 0;
 
-    background-color: #333;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 
-    color: white;
+    color: var(--blanco);
     text-decoration: none;
-    text-align: center;
-    border-radius: 0.75rem;
+
+    border: 4px solid var(--blanco);
+    border-radius: 12px;
+
     overflow: hidden;
 
-    transition: transform 0.2s ease;
+    box-shadow: 0 5px 15px rgba(23, 59, 82, 0.18);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+#contenedorJuegos .boton-juego::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+        transparent 45%,
+        rgba(0, 0, 0, 0.72)
+    );
 }
 
 #contenedorJuegos .boton-juego h2 {
-    width: 100%;
-    margin: 0;
-    padding: 1rem;
+    position: relative;
+    z-index: 1;
 
-    box-sizing: border-box;
-    font-size: 1.5rem;
-    color: white;
+    width: 100%;
+
+    margin: 0;
+    padding: 22px 15px;
+
+    color: var(--blanco);
+
+    font-size: 1.4rem;
     text-align: center;
 
-    overflow-wrap: break-word;
-    background-color: rgba(0, 0, 0, 0.65);
-    border-radius: 0.5rem;
+    background-color: rgba(23, 59, 82, 0.72);
 }
-
-/* ---------- EFECTO AL PASAR EL CURSOR ---------- */
 
 #contenedorJuegos .boton-juego:hover {
-    transform: scale(1.03);
+    transform: translateY(-6px);
+
+    box-shadow: 0 10px 22px rgba(23, 59, 82, 0.25);
 }
 
-/* ---------- IMÁGENES DE CADA JUEGO ---------- */
+
+/* ---------- IMÁGENES ---------- */
 
 #contenedorJuegos .boton-memotest {
-    background-image: url("/img/imageMemotest.jpg");
+    background-image: url("../img/imageMemotest.jpg");
 }
 
 #contenedorJuegos .boton-dados {
-    background-image: url("/img/imagenFutbol.jpg");
+    background-image: url("../img/imagenFutbol.jpg");
 }
 
 #contenedorJuegos .boton-preguntas {
-    background-image: url("/img/imagenAPI.jpg");
+    background-image: url("../img/imagenAPI.jpg");
 }
 
-/* --------------------------------------------------
-   JUEGO CARTAS MEMOTEST
-   -------------------------------------------------- */
+
+/* ==================================================
+   MEMOTEST
+   ================================================== */
 
 /* ---------- PANTALLAS ---------- */
 
-/*
-   Por ahora todas las pantallas están ocultas,
-   excepto la primera.
-*/
+#pantalla-modo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+    max-width: 600px;
+
+    padding: 35px;
+
+    background-color: var(--blanco);
+
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+
+    box-shadow: 0 4px 15px rgba(23, 59, 82, 0.08);
+}
 
 #pantalla-jugadores,
 #pantalla-tematica,
 #pantalla-dificultad,
 #pantalla-juego,
 #pantalla-resultado {
+    width: 100%;
+}
+
+#pantalla-jugadores,
+#pantalla-tematica,
+#pantalla-dificultad,
+#pantalla-resultado {
     display: none;
-}
 
-#pantalla-modo {
-    display: flex;
     flex-direction: column;
     align-items: center;
+
+    max-width: 600px;
+
+    padding: 35px;
+
+    background-color: var(--blanco);
+
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+
+    box-shadow: 0 4px 15px rgba(23, 59, 82, 0.08);
 }
 
 
-/* ---------- BOTONES ---------- */
-
-button {
-    padding: 12px 25px;
-    margin: 10px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-
-/* ---------- JUGADORES ---------- */
-
-#pantalla-jugadores {
-    flex-direction: column;
-    align-items: center;
-}
+/* ---------- FORMULARIO DE JUGADORES ---------- */
 
 #pantalla-jugadores label {
     margin-top: 10px;
+
+    font-weight: bold;
 }
 
 #pantalla-jugadores input {
-    margin: 5px 0 10px 0;
-    padding: 8px;
-}
+    width: 100%;
+    max-width: 300px;
 
-
-/* ---------- TEMÁTICA ---------- */
-
-#pantalla-tematica {
-    flex-direction: column;
-    align-items: center;
-}
-
-
-/* ---------- DIFICULTAD ---------- */
-
-#pantalla-dificultad {
-    flex-direction: column;
-    align-items: center;
+    margin: 5px 0 10px;
 }
 
 
 /* ---------- JUEGO ---------- */
 
 #pantalla-juego {
-    width: 100%;
+    display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 
-/* Información de los jugadores */
+/* ---------- INFORMACIÓN DEL JUEGO ---------- */
+
+#movimientos-general,
+#parejas-general,
+#turno,
+#movimientos-jugador,
+#parejas-jugador {
+    margin: 5px;
+}
+
+#turno {
+    font-weight: bold;
+    color: var(--celeste);
+}
+
+
+/* ---------- INFORMACIÓN DE JUGADORES ---------- */
 
 #informacion-jugadores {
     display: flex;
     flex-wrap: wrap;
+
     justify-content: center;
+    gap: 15px;
+
+    width: 100%;
 }
 
 
@@ -222,184 +424,223 @@ button {
 #tablero {
     display: flex;
     flex-wrap: wrap;
+
     justify-content: center;
-    width: 90%;
+    align-items: center;
+
+    width: 100%;
     max-width: 900px;
-    margin: 30px auto;
+
+    margin: 25px auto;
     padding: 20px;
+
     gap: 10px;
-    border: 2px solid black;
+
+    background-color: var(--celeste-claro);
+
+    border: 2px solid var(--celeste);
+    border-radius: 12px;
+}
+
+
+/* ---------- CARTAS ---------- */
+
+.carta {
+    width: 90px;
+    height: 90px;
+
+    margin: 4px;
+
+    position: relative;
+
+    cursor: pointer;
+
+    perspective: 1000px;
+}
+
+.frente,
+.reverso {
+    width: 100%;
+    height: 100%;
+
+    position: absolute;
+
+    border-radius: 7px;
+
+    backface-visibility: hidden;
+
+    overflow: hidden;
+
+    transition: transform 0.5s ease;
+
+    box-shadow: 0 2px 5px rgba(23, 59, 82, 0.15);
+}
+
+.frente {
+    transform: rotateY(180deg);
+}
+
+.frente img,
+.reverso img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.carta.girada .frente {
+    transform: rotateY(0deg);
+}
+
+.carta.girada .reverso {
+    transform: rotateY(180deg);
 }
 
 
 /* ---------- RESULTADO ---------- */
 
 #pantalla-resultado {
-    flex-direction: column;
+    gap: 5px;
+}
+
+#mensaje-resultado {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+#parejas-resultado {
+    font-size: 1.1rem;
+}
+
+#puntaje {
+    display: flex;
+    flex-wrap: wrap;
+
+    justify-content: center;
     align-items: center;
+
+    gap: 10px;
+
+    margin: 20px 0;
 }
 
-
-/* ---------- FOOTER ---------- */
-
-footer {
-    text-align: center;
-    padding: 20px;
-}
-
-footer img {
-    margin-top: 10px;
-}
-
-/* ---------- CARTA ----------*/
-.carta {
-     width: 100px;
-     height: 100px;
-     margin: 5px;
-     position: relative;
-     cursor: pointer; 
-     perspective: 1000px;
-}
-
-.frente, .reverso {
-    width: 100%;
-    height: 100%; 
-    position: absolute; 
-    backface-visibility: hidden; 
-    transition: transform 0.5s;
-}
-
-.frente { 
-    transform: rotateY(180deg); 
-    
-}
-
-.frente img, .reverso img {
-    width: 100%;
-    height: 100%;
-}
-
-.carta.girada .frente { 
-    transform: rotateY(0deg); 
-} 
-
-.carta.girada .reverso { 
-    transform: rotateY(180deg); 
-}
 
 /* ==================================================
-   JUEGO DE DADOS
+   CREA TU JUGADOR
    ================================================== */
 
+#explicacion-juego {
+    width: 100%;
+    max-width: 750px;
 
-/* --------------------------------------------------
-   CONTENEDOR GENERAL DEL JUEGO
-   -------------------------------------------------- */
+    margin-bottom: 25px;
+    padding: 25px 30px;
 
+    background-color: var(--blanco);
+
+    border-left: 5px solid var(--celeste);
+    border-radius: 8px;
+
+    box-shadow: 0 3px 12px rgba(23, 59, 82, 0.07);
+}
+
+#explicacion-juego h2 {
+    margin-top: 0;
+}
+
+#explicacion-juego p {
+    margin-bottom: 0;
+
+    color: var(--gris);
+}
+
+
+/* ---------- CONTENEDOR GENERAL ---------- */
 
 #juego-dados {
     width: 100%;
+
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 
-/* --------------------------------------------------
-   ZONA DEL JUGADOR
-   -------------------------------------------------- */
-
-/*
-   Reservamos siempre un espacio para la carta.
-   Aunque todavía no haya ningún jugador,
-   los dados permanecen en el mismo lugar.
-*/
+/* ---------- ZONA DEL JUGADOR ---------- */
 
 #zona-jugador {
     width: 100%;
-    min-height: 520px;
+    min-height: 0;
 
     display: flex;
+
     justify-content: center;
     align-items: center;
 
     text-align: center;
 }
 
-/* --------------------------------------------------
-   CARTA DEL JUGADOR
-   -------------------------------------------------- */
+
+/* ---------- CARTA DEL JUGADOR ---------- */
 
 .carta-jugador {
     width: 100%;
     max-width: 400px;
 
-    height: 500px;
-
     display: flex;
     flex-direction: column;
 
     align-items: center;
     justify-content: center;
 
-    text-align: center;
+    padding: 25px;
 
-    margin: 0 auto;
+    background-color: var(--blanco);
+
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+
+    box-shadow: 0 4px 15px rgba(23, 59, 82, 0.1);
 }
-/* --------------------------------------------------
-   IMAGEN DEL JUGADOR
-   -------------------------------------------------- */
-
-/*
-   La imagen es grande y queda centrada.
-*/
 
 .carta-jugador img {
     display: block;
 
     width: 100%;
-    max-width: 350px;
+    max-width: 280px;
 
     height: auto;
 
-    margin: 0 auto;
+    border-radius: 8px;
+
+    box-shadow: 0 3px 8px rgba(23, 59, 82, 0.15);
 }
-
-
-/* --------------------------------------------------
-   NOMBRE DEL JUGADOR
-   -------------------------------------------------- */
 
 .carta-jugador h2 {
-    margin: 15px 0 5px 0;
+    margin: 15px 0 5px;
 }
-
-
-/* --------------------------------------------------
-   DORSAL
-   -------------------------------------------------- */
 
 .carta-jugador p {
-    margin: 5px 0 15px 0;
+    margin: 5px 0 20px;
+
+    color: var(--gris);
 }
 
 
-/* --------------------------------------------------
-   BOTONES DE CARACTERÍSTICAS
-   -------------------------------------------------- */
+/* ---------- CARACTERÍSTICAS ---------- */
 
 .caracteristicas {
     display: flex;
-    flex-direction: row;
 
     justify-content: center;
     align-items: stretch;
 
-    gap: 10px;
+    gap: 8px;
 
     width: 100%;
 }
-
 
 .caracteristicas button {
     flex: 1;
@@ -407,22 +648,13 @@ footer img {
     min-height: 50px;
 
     margin: 0;
-    padding: 10px 15px;
+    padding: 10px;
 
-    cursor: pointer;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-size: 0.9rem;
 }
-/* --------------------------------------------------
-   ZONA DE LOS DADOS
-   -------------------------------------------------- */
 
-/*
-   Los dados aparecen DEBAJO de la carta
-   y de los botones de características.
-*/
+
+/* ---------- DADOS ---------- */
 
 #zona-dados {
     width: 100%;
@@ -433,44 +665,24 @@ footer img {
     align-items: center;
     justify-content: center;
 
-    margin-top: 30px;
+    margin-top: 25px;
 }
-
-
-/* --------------------------------------------------
-   CONTENEDOR DE LOS CUATRO DADOS
-   -------------------------------------------------- */
-
-/*
-   Flexbox coloca los cuatro dados en una fila.
-*/
 
 #contenedor-dados {
     display: flex;
 
-    flex-direction: row;
-
     justify-content: center;
     align-items: center;
 
-    gap: 15px;
+    gap: 12px;
 }
 
 
-/* --------------------------------------------------
-   DADOS
-   -------------------------------------------------- */
-
-/*
-   Cada dado es un cuadrado.
-   
-   Más adelante podés poner una imagen
-   como fondo de estos botones.
-*/
+/* ---------- DADO INDIVIDUAL ---------- */
 
 .dado {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
 
     display: flex;
 
@@ -479,44 +691,29 @@ footer img {
 
     margin: 0;
 
-    font-size: 28px;
+    border: 3px solid var(--celeste);
+
+    border-radius: 10px;
+
+    background-color: var(--blanco);
+    color: var(--azul);
+
+    font-size: 1.7rem;
     font-weight: bold;
 
     cursor: pointer;
 }
 
-
-/*
-   Los dados que todavía no pueden utilizarse
-   aparecen bloqueados.
-*/
-
-.dado:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
+.dado:hover:not(:disabled) {
+    background-color: var(--celeste-claro);
 }
 
-/* --------------------------------------------------
-   ANIMACIÓN DE LOS DADOS
-   -------------------------------------------------- */
 
-/*
-   Esta clase se agrega momentáneamente
-   cuando se tira un dado.
-*/
+/* ---------- ANIMACIÓN ---------- */
 
 .dado.animando {
     animation: tirarDado 0.5s ease;
 }
-
-
-/*
-   Animación:
-
-   0%   → el dado empieza normal
-   50%  → gira y se agranda ligeramente
-   100% → vuelve a su posición
-*/
 
 @keyframes tirarDado {
 
@@ -535,31 +732,30 @@ footer img {
         opacity: 1;
     }
 }
-/* --------------------------------------------------
-   SUMA
-   -------------------------------------------------- */
+
+
+/* ---------- SUMA ---------- */
 
 #texto-suma {
-    margin: 20px 0 5px 0;
+    margin: 18px 0 5px;
 
-    font-size: 18px;
+    font-size: 1.1rem;
+    font-weight: bold;
 }
 
 
-/* --------------------------------------------------
-   MENSAJE
-   -------------------------------------------------- */
+/* ---------- MENSAJE ---------- */
 
 #mensaje {
     min-height: 24px;
 
-    margin: 5px 0 20px 0;
+    margin: 5px 0 20px;
+
+    color: var(--gris);
 }
 
 
-/* --------------------------------------------------
-   JUGADOR CREADO
-   -------------------------------------------------- */
+/* ---------- JUGADOR CREADO ---------- */
 
 #jugador-creado {
     display: flex;
@@ -569,13 +765,42 @@ footer img {
     align-items: center;
     justify-content: center;
 
+    width: 100%;
+    max-width: 650px;
+
     text-align: center;
 }
 
+.estadisticas-creadas {
+    display: flex;
 
-/* --------------------------------------------------
-   FORMULARIO
-   -------------------------------------------------- */
+    justify-content: center;
+
+    width: 100%;
+
+    gap: 12px;
+}
+
+.estadisticas-creadas p {
+    flex: 1;
+
+    margin: 0;
+    padding: 15px;
+
+    background-color: var(--blanco);
+
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+
+    box-shadow: 0 2px 8px rgba(23, 59, 82, 0.07);
+}
+
+.estadisticas-creadas strong {
+    color: var(--celeste);
+}
+
+
+/* ---------- FORMULARIO ---------- */
 
 #zona-formulario {
     display: flex;
@@ -585,16 +810,50 @@ footer img {
     align-items: center;
     justify-content: center;
 
+    width: 100%;
+    max-width: 600px;
+
+    margin-top: 25px;
+
     text-align: center;
 }
 
+#form-jugador {
+    display: flex;
 
-/* --------------------------------------------------
-   SCOREBOARD
-   -------------------------------------------------- */
+    flex-direction: column;
+
+    align-items: center;
+
+    width: 100%;
+    max-width: 350px;
+
+    padding: 25px;
+
+    background-color: var(--blanco);
+
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+}
+
+#form-jugador label {
+    margin-top: 8px;
+
+    font-weight: bold;
+}
+
+#form-jugador input {
+    width: 100%;
+
+    margin: 5px 0 12px;
+}
+
+
+/* ---------- SCOREBOARD DEL JUEGO ---------- */
 
 #scoreboard {
     width: 100%;
+    max-width: 750px;
 
     display: flex;
 
@@ -602,5 +861,383 @@ footer img {
 
     align-items: center;
 
+    margin-top: 30px;
+
     text-align: center;
+}
+
+#scoreboard ol {
+    width: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    list-style-position: inside;
+}
+
+#scoreboard li {
+    margin: 8px 0;
+    padding: 12px 15px;
+
+    background-color: var(--blanco);
+
+    border: 1px solid var(--borde);
+    border-radius: 7px;
+
+    text-align: left;
+}
+
+
+/* ==================================================
+   TRIVIA
+   ================================================== */
+
+#pantalla-inicio,
+#pantalla-resultados,
+#pantalla-juego {
+    width: 100%;
+    max-width: 800px;
+
+    padding: 35px;
+
+    background-color: var(--blanco);
+
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+
+    box-shadow: 0 4px 15px rgba(23, 59, 82, 0.08);
+}
+
+#pantalla-inicio h2,
+#pantalla-resultados h2 {
+    margin-top: 0;
+}
+
+#pantalla-inicio p {
+    color: var(--gris);
+}
+
+
+/* ---------- ENCABEZADO DEL JUEGO ---------- */
+
+#encabezado-juego {
+    display: flex;
+    flex-wrap: wrap;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+
+    border-bottom: 2px solid var(--celeste-claro);
+}
+
+#numero-pregunta {
+    font-weight: bold;
+}
+
+#categoria-pregunta {
+    padding: 5px 10px;
+
+    background-color: var(--celeste-claro);
+    color: var(--azul);
+
+    border-radius: 5px;
+
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+#temporizador {
+    padding: 7px 12px;
+
+    background-color: var(--azul);
+    color: var(--blanco);
+
+    border-radius: 6px;
+
+    font-weight: bold;
+}
+
+
+/* ---------- PREGUNTA ---------- */
+
+#texto-pregunta {
+    margin: 25px 0;
+
+    font-size: 1.3rem;
+}
+
+
+/* ---------- OPCIONES ---------- */
+
+.opciones-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 12px;
+
+    width: 100%;
+}
+
+.btn-opcion {
+    width: 100%;
+
+    min-height: 60px;
+
+    margin: 0;
+
+    background-color: var(--celeste-claro);
+    color: var(--azul);
+
+    border: 2px solid transparent;
+}
+
+.btn-opcion:hover:not(:disabled) {
+    background-color: #C7E5F3;
+
+    border-color: var(--celeste);
+
+    transform: none;
+}
+
+.btn-opcion.correcta {
+    background-color: #BFE4C5;
+    color: #24572D;
+}
+
+.btn-opcion.incorrecta {
+    background-color: #F2C5C5;
+    color: #762D2D;
+}
+
+
+/* ---------- FEEDBACK ---------- */
+
+.feedback {
+    min-height: 30px;
+
+    margin: 20px 0;
+
+    font-weight: bold;
+}
+
+
+/* ==================================================
+   TABLA DE PUNTAJES
+   ================================================== */
+
+main > main {
+    width: 100%;
+    max-width: 850px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 0;
+}
+
+#tabla-puntajes,
+#tabla-puntajes-memotest {
+    width: 100%;
+    max-width: 750px;
+
+    margin: 10px 0 20px;
+
+    border-collapse: collapse;
+
+    background-color: var(--blanco);
+
+    border-radius: 8px;
+    overflow: hidden;
+
+    box-shadow: 0 3px 12px rgba(23, 59, 82, 0.08);
+}
+
+#tabla-puntajes th,
+#tabla-puntajes-memotest th {
+    padding: 13px 15px;
+
+    background-color: var(--celeste);
+
+    color: var(--blanco);
+
+    text-align: center;
+}
+
+#tabla-puntajes td,
+#tabla-puntajes-memotest td {
+    padding: 12px 15px;
+
+    border-bottom: 1px solid var(--borde);
+
+    text-align: center;
+}
+
+#tabla-puntajes tbody tr:last-child td,
+#tabla-puntajes-memotest tbody tr:last-child td {
+    border-bottom: none;
+}
+
+#tabla-puntajes tbody tr:hover,
+#tabla-puntajes-memotest tbody tr:hover {
+    background-color: var(--celeste-claro);
+}
+
+
+/* ==================================================
+   FOOTER
+   ================================================== */
+
+footer {
+    width: 100%;
+
+    padding: 25px 20px;
+
+    text-align: center;
+
+    color: var(--gris);
+}
+
+footer hr {
+    width: 90%;
+    max-width: 1000px;
+
+    margin: 10px auto;
+
+    border: none;
+    border-top: 1px solid var(--borde);
+}
+
+footer address {
+    font-style: normal;
+}
+
+footer p {
+    margin: 8px 0;
+
+    font-size: 0.9rem;
+}
+
+footer img {
+    width: 180px;
+    height: auto;
+
+    margin-top: 10px;
+}
+
+
+/* ==================================================
+   RESPONSIVE
+   ================================================== */
+
+@media (max-width: 800px) {
+
+    nav ul {
+        gap: 2px;
+        padding: 10px;
+    }
+
+    nav a {
+        padding: 8px 10px;
+
+        font-size: 0.9rem;
+    }
+
+    main {
+        padding: 30px 15px 45px;
+    }
+
+    header h1 {
+        font-size: 1.9rem;
+    }
+
+    #contenedorJuegos {
+        flex-direction: column;
+
+        max-width: 500px;
+    }
+
+    #contenedorJuegos .boton-juego {
+        width: 100%;
+    }
+
+    .carta {
+        width: 75px;
+        height: 75px;
+    }
+
+    #tablero {
+        padding: 12px;
+        gap: 5px;
+    }
+
+    .opciones-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    nav ul {
+        flex-direction: column;
+    }
+
+    nav a {
+        width: 100%;
+
+        text-align: center;
+    }
+
+    header h1 {
+        margin-top: 25px;
+
+        font-size: 1.6rem;
+    }
+
+    #pantalla-modo,
+    #pantalla-jugadores,
+    #pantalla-tematica,
+    #pantalla-dificultad,
+    #pantalla-resultado,
+    #pantalla-inicio,
+    #pantalla-juego {
+        padding: 25px 15px;
+    }
+
+    .caracteristicas {
+        flex-direction: column;
+    }
+
+    .estadisticas-creadas {
+        flex-direction: column;
+    }
+
+    #contenedor-dados {
+        gap: 7px;
+    }
+
+    .dado {
+        width: 60px;
+        height: 60px;
+    }
+
+    #encabezado-juego {
+        flex-direction: column;
+    }
+
+    .carta {
+        width: 65px;
+        height: 65px;
+    }
+
+    footer img {
+        width: 150px;
+    }
 }
