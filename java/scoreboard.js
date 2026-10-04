@@ -1,5 +1,5 @@
 
-"use strict";
+
 
 // ==========================================
 // TABLA DE PUNTAJES - JUEGO DE DADOS

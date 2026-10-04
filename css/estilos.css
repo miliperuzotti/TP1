@@ -1043,6 +1043,7 @@ main > main {
 }
 
 #tabla-puntajes,
+#tabla-puntajes-dados,
 #tabla-puntajes-memotest {
     width: 100%;
     max-width: 750px;
@@ -1060,6 +1061,7 @@ main > main {
 }
 
 #tabla-puntajes th,
+#tabla-puntajes-dados th,
 #tabla-puntajes-memotest th {
     padding: 13px 15px;
 
@@ -1071,6 +1073,7 @@ main > main {
 }
 
 #tabla-puntajes td,
+#tabla-puntajes-dados td,
 #tabla-puntajes-memotest td {
     padding: 12px 15px;
 
@@ -1080,11 +1083,13 @@ main > main {
 }
 
 #tabla-puntajes tbody tr:last-child td,
+#tabla-puntajes-dados tr:last-child td,
 #tabla-puntajes-memotest tbody tr:last-child td {
     border-bottom: none;
 }
 
 #tabla-puntajes tbody tr:hover,
+#tabla-puntajes-dados tr:hover,
 #tabla-puntajes-memotest tbody tr:hover {
     background-color: var(--celeste-claro);
 }
