@@ -27,7 +27,7 @@ body {
     background-color: var(--crema);
     color: var(--azul);
 
-    font-family: Arial, sans-serif;
+    font-family: "Montserrat", sans-serif;
     line-height: 1.5;
 }
 
@@ -1134,115 +1134,4 @@ footer img {
     height: auto;
 
     margin-top: 10px;
-}
-
-
-/* ==================================================
-   RESPONSIVE
-   ================================================== */
-
-@media (max-width: 800px) {
-
-    nav ul {
-        gap: 2px;
-        padding: 10px;
-    }
-
-    nav a {
-        padding: 8px 10px;
-
-        font-size: 0.9rem;
-    }
-
-    main {
-        padding: 30px 15px 45px;
-    }
-
-    header h1 {
-        font-size: 1.9rem;
-    }
-
-    #contenedorJuegos {
-        flex-direction: column;
-
-        max-width: 500px;
-    }
-
-    #contenedorJuegos .boton-juego {
-        width: 100%;
-    }
-
-    .carta {
-        width: 75px;
-        height: 75px;
-    }
-
-    #tablero {
-        padding: 12px;
-        gap: 5px;
-    }
-
-    .opciones-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-
-@media (max-width: 500px) {
-
-    nav ul {
-        flex-direction: column;
-    }
-
-    nav a {
-        width: 100%;
-
-        text-align: center;
-    }
-
-    header h1 {
-        margin-top: 25px;
-
-        font-size: 1.6rem;
-    }
-
-    #pantalla-modo,
-    #pantalla-jugadores,
-    #pantalla-tematica,
-    #pantalla-dificultad,
-    #pantalla-resultado,
-    #pantalla-inicio,
-    #pantalla-juego {
-        padding: 25px 15px;
-    }
-
-    .caracteristicas {
-        flex-direction: column;
-    }
-
-    .estadisticas-creadas {
-        flex-direction: column;
-    }
-
-    #contenedor-dados {
-        gap: 7px;
-    }
-
-    .dado {
-        width: 60px;
-        height: 60px;
-    }
-
-    #encabezado-juego {
-        flex-direction: column;
-    }
-
-    .carta {
-        width: 65px;
-        height: 65px;
-    }
-
-    footer img {
-        width: 150px;
-    }
 }
