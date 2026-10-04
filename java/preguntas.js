@@ -225,61 +225,80 @@ function extraerOpcionesUnicas(propiedad, valorCorrecto, cantidadRequerida) {
 /**
  * Inicia la partida
  */
+// Iniciar el juego
 async function iniciarJuego() {
-    if (registrosAPI.length === 0) {
+    // Carga los datos si aún no están en memoria
+    if (datosGlobalesAPI.length === 0) {
         await cargarDatosAPI();
     }
-    
-    if (registrosAPI.length === 0) {
-        alert('No se pudieron cargar los datos de la API.');
-        return;
-    }
 
-    generarPreguntas();
+    // Genera la lista de 10 preguntas
+    preguntasJuego = generarPreguntas(datosGlobalesAPI);
+    
+    // Reinicia contadores
     indicePreguntaActual = 0;
     puntaje = 0;
 
-    pantallaInicio.style.display = 'none';
-    pantallaResultados.style.display = 'none';
-    pantallaJuego.style.display = 'block';
+    // Cambia de pantalla: oculta inicio, muestra juego
+    document.getElementById('pantalla-inicio').classList.add('oculto');
+    document.getElementById('pantalla-juego').classList.remove('oculto');
 
+    // Muestra la primera pregunta
     mostrarPregunta();
 }
 
-/**
- * Muestra la pregunta actual e inicia el temporizador
- */
+// Mostrar la pregunta actual en la interfaz
 function mostrarPregunta() {
     resetearEstadoPregunta();
-    
-    const preguntaObj = preguntasJuego[indicePreguntaActual];
 
-    numeroPreguntaEl.innerText = `Pregunta ${indicePreguntaActual + 1}/10`;
-    categoriaPreguntaEl.innerText = preguntaObj.categoria;
-    textoPreguntaEl.innerText = preguntaObj.pregunta;
+    const pregunta = preguntasJuego[indicePreguntaActual];
 
-    preguntaObj.opciones.forEach(opcion => {
+    // Actualiza textos de la interfaz
+    document.getElementById('numero-pregunta').textContent = `Pregunta ${indicePreguntaActual + 1}/10`;
+    document.getElementById('categoria-pregunta').textContent = pregunta.categoria;
+    document.getElementById('texto-pregunta').textContent = pregunta.enunciado;
+
+    // Renderiza las 4 opciones como botones
+    const contenedorOpciones = document.getElementById('contenedor-opciones');
+    contenedorOpciones.innerHTML = ''; // Limpia botones anteriores
+
+    pregunta.opciones.forEach(opcion => {
         const boton = document.createElement('button');
-        boton.innerText = opcion;
         boton.classList.add('btn-opcion');
-        boton.addEventListener('click', () => seleccionarRespuesta(opcion, preguntaObj.respuestaCorrecta));
+        boton.textContent = opcion;
+        
+        // Evento al hacer clic en una opción
+        boton.addEventListener('click', () => seleccionarRespuesta(opcion, pregunta.respuestaCorrecta));
         contenedorOpciones.appendChild(boton);
     });
 
+    // Inicia el contador de 30 segundos
     iniciarTemporizador();
 }
 
-/**
- * Reinicia elementos entre preguntas
- */
-function resetearEstadoPregunta() {
-    clearInterval(temporizadorInterval);
+// Control del tiempo (Cuenta regresiva)
+function iniciarTemporizador() {
     tiempoRestante = 30;
-    tiempoRestanteEl.innerText = tiempoRestante;
-    mensajeFeedback.innerText = '';
-    btnSiguiente.style.display = 'none';
-    contenedorOpciones.innerHTML = '';
+    document.getElementById('tiempo-restante').textContent = tiempoRestante;
+
+    intervaloTiempo = setInterval(() => {
+        tiempoRestante--;
+        document.getElementById('tiempo-restante').textContent = tiempoRestante;
+
+        if (tiempoRestante === 0) {
+            clearInterval(intervaloTiempo);
+            manejarTiempoAgotado();
+        }
+    }, 1000);
 }
+
+// Limpiar el estado visual anterior
+function resetearEstadoPregunta() {
+    clearInterval(intervaloTiempo);
+    document.getElementById('mensaje-retroalimentacion').textContent = '';
+    document.getElementById('btn-siguiente').classList.add('oculto');
+}
+
 
 /**
  * Controla la cuenta regresiva de 30 segundos
@@ -299,109 +318,136 @@ function iniciarTemporizador() {
 /**
  * Evalúa la opción seleccionada por el usuario
  */
+// Procesar la opción elegida por el usuario
 function seleccionarRespuesta(opcionSeleccionada, respuestaCorrecta) {
-    clearInterval(temporizadorInterval);
+    // Detiene el reloj
+    clearInterval(intervaloTiempo);
 
-    const botones = contenedorOpciones.querySelectorAll('.btn-opcion');
-    botones.forEach(btn => {
-        btn.disabled = true;
-        if (btn.innerText === respuestaCorrecta) {
-            btn.classList.add('correcta');
-        }
-        if (btn.innerText === opcionSeleccionada && opcionSeleccionada !== respuestaCorrecta) {
-            btn.classList.add('incorrecta');
+    const botones = document.querySelectorAll('.btn-opcion');
+    
+    // Deshabilita todos los botones para que no pueda volver a hacer clic
+    botones.forEach(boton => {
+        boton.disabled = true;
+        
+        // Colorea las respuestas
+        if (boton.textContent === respuestaCorrecta) {
+            boton.classList.add('correcta'); // Verde
+        } else if (boton.textContent === opcionSeleccionada) {
+            boton.classList.add('incorrecta'); // Rojo
         }
     });
 
+    const mensajeFeedback = document.getElementById('mensaje-retroalimentacion');
+
+    // Evalúa si acertó
     if (opcionSeleccionada === respuestaCorrecta) {
-        puntaje += 10;
-        mensajeFeedback.innerText = '¡Correcto! (+10 pts)';
-        mensajeFeedback.style.color = '#5cb85c';
+        puntaje += 10; // Suma 10 puntos por acierto
+        mensajeFeedback.textContent = "¡Correcto! +10 puntos";
+        mensajeFeedback.className = "feedback-correcto";
     } else {
-        mensajeFeedback.innerText = `Incorrecto. La respuesta era: ${respuestaCorrecta}`;
-        mensajeFeedback.style.color = '#d9534f';
+        mensajeFeedback.textContent = `Incorrecto. La respuesta era: ${respuestaCorrecta}`;
+        mensajeFeedback.className = "feedback-incorrecto";
     }
 
-    mostrarBotonSiguiente();
+    // Muestra el botón para pasar a la siguiente pregunta
+    document.getElementById('btn-siguiente').classList.remove('oculto');
 }
 
-/**
- * Maneja el caso en que se agoten los 30 segundos
- */
+// Procesar cuando se agotan los 30 segundos
 function manejarTiempoAgotado() {
-    const preguntaObj = preguntasJuego[indicePreguntaActual];
-    const botones = contenedorOpciones.querySelectorAll('.btn-opcion');
+    const preguntaActual = preguntasJuego[indicePreguntaActual];
+    const botones = document.querySelectorAll('.btn-opcion');
 
-    botones.forEach(btn => {
-        btn.disabled = true;
-        if (btn.innerText === preguntaObj.respuestaCorrecta) {
-            btn.classList.add('correcta');
+    botones.forEach(boton => {
+        boton.disabled = true;
+        if (boton.textContent === preguntaActual.respuestaCorrecta) {
+            boton.classList.add('correcta');
         }
     });
 
-    mensajeFeedback.innerText = `¡Tiempo agotado! La respuesta correcta era: ${preguntaObj.respuestaCorrecta}`;
-    mensajeFeedback.style.color = '#d9534f';
-
-    mostrarBotonSiguiente();
+    document.getElementById('mensaje-retroalimentacion').textContent = "¡Tiempo agotado!";
+    document.getElementById('btn-siguiente').classList.remove('oculto');
 }
 
-function mostrarBotonSiguiente() {
-    if (indicePreguntaActual < preguntasJuego.length - 1) {
-        btnSiguiente.innerText = 'Siguiente Pregunta';
-    } else {
-        btnSiguiente.innerText = 'Ver Resultados';
-    }
-    btnSiguiente.style.display = 'inline-block';
-}
-
+// C. Avanzar a la siguiente pregunta o terminar el juego
 function siguientePregunta() {
     indicePreguntaActual++;
-    if (indicePreguntaActual < preguntasJuego.length) {
+
+    if (indicePreguntaActual < 10) {
         mostrarPregunta();
     } else {
         mostrarResultados();
     }
 }
 
+//Mostrar pantalla de resultados
 function mostrarResultados() {
-    pantallaJuego.style.display = 'none';
-    pantallaResultados.style.display = 'block';
+    // Oculta pantalla de juego y muestra la de resultados
+    document.getElementById('pantalla-juego').classList.add('oculto');
+    document.getElementById('pantalla-resultados').classList.remove('oculto');
 
-    puntajeFinalEl.innerText = puntaje;
+    // Despliega el puntaje final
+    document.getElementById('puntaje-final').textContent = `${puntaje} / 100 puntos`;
 
+    // Asigna un mensaje personalizado según el rendimiento
+    const mensajeFinal = document.getElementById('mensaje-evaluacion');
     if (puntaje >= 80) {
-        mensajeFinalEl.innerText = '¡Excelente conocimiento de la cultura e identidad argentina!';
+        mensajeFinal.textContent = "¡Excelente conocimiento sobre la cultura argentina!";
     } else if (puntaje >= 50) {
-        mensajeFinalEl.innerText = '¡Buen trabajo! Conoces bastante sobre los sonidos y lenguas del país.';
+        mensajeFinal.textContent = "¡Buen trabajo! Conoces bastante sobre nuestro patrimonio.";
     } else {
-        mensajeFinalEl.innerText = 'Sigue explorando y aprendiendo más sobre nuestro patrimonio cultural.';
+        mensajeFinal.textContent = "Sigue explorando y aprendiendo sobre nuestra cultura.";
     }
+
+    // Renderiza la tabla de los mejores puntajes guardados
+    actualizarTablaRanking();
 }
 
+// Guardar el puntaje en el almacenamiento local del navegador (localStorage)
 function guardarPuntaje() {
-    const nombre = nombreJugadorEl.value.trim();
+    const inputNombre = document.getElementById('nombre-jugador');
+    const nombre = inputNombre.value.trim();
 
-    if (nombre === '') {
-        alert('Ingresá tu nombre para guardar el puntaje.');
+    if (nombre === "") {
+        alert("Por favor, ingresa tu nombre.");
         return;
     }
 
-    const puntajesGuardados =
-        JSON.parse(localStorage.getItem('puntajes') || '[]');
+    // Obtiene el ranking previo de localStorage o crea un arreglo vacío si no existe
+    const rankingGuardado = JSON.parse(localStorage.getItem('rankingTrivia')) || [];
 
-    puntajesGuardados.push({
-        nombre: nombre,
-        puntaje: puntaje
-    });
+    // Agrega el nuevo registro
+    rankingGuardado.push({ nombre: nombre, puntaje: puntaje });
 
-    puntajesGuardados.sort((a, b) => b.puntaje - a.puntaje);
+    // Ordena de mayor a menor puntaje
+    rankingGuardado.sort((a, b) => b.puntaje - a.puntaje);
 
-    localStorage.setItem(
-        'puntajes',
-        JSON.stringify(puntajesGuardados.slice(0, 10))
-    );
+    // Mantiene solo el Top 10
+    const top10 = rankingGuardado.slice(0, 10);
+
+    // Guarda de nuevo en localStorage convertido a texto JSON
+    localStorage.setItem('rankingTrivia', JSON.stringify(top10));
+
+    inputNombre.value = ''; // Limpia el input
+    actualizarTablaRanking(); // Recarga la tabla en pantalla
 }
 
+// Función auxiliar para pintar el ranking en el DOM
+function actualizarTablaRanking() {
+    const tabla = document.getElementById('lista-ranking');
+    tabla.innerHTML = '';
+
+    const ranking = JSON.parse(localStorage.getItem('rankingTrivia')) || [];
+
+    ranking.forEach((posicion, index) => {
+        const fila = document.createElement('li');
+        fila.textContent = `${index + 1}. ${posicion.nombre} - ${posicion.puntaje} pts`;
+        tabla.appendChild(fila);
+    });
+}
+
+// Reiniciar para volver a jugar
 function reiniciarJuego() {
+    document.getElementById('pantalla-resultados').classList.add('oculto');
     iniciarJuego();
 }

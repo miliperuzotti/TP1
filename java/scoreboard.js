@@ -1,32 +1,34 @@
-const puntajes = JSON.parse(
-    localStorage.getItem('puntajes') || '[]'
+// TABLA MEMOTEST
+const puntajesMemotest = JSON.parse(
+    localStorage.getItem("puntajesMemotest") || "[]"
 );
 
-const lista = document.getElementById('lista-puntajes');
+const listaMemotest = document.querySelector("#lista-puntajes-memotest");
 
-puntajes.forEach((jugador, indice) => {
-    const fila = document.createElement('tr');
+puntajesMemotest.forEach((jugador, indice) => {
+    const fila = document.createElement("tr");
 
     fila.innerHTML = `
         <td>${indice + 1}</td>
         <td>${jugador.nombre}</td>
-        <td>${jugador.puntaje} / 100</td>
+        <td>${jugador.parejas}</td>
     `;
 
-    lista.appendChild(fila);
+    listaMemotest.appendChild(fila);
 });
 
-const btnBorrarPuntajes =
-    document.getElementById('btn-borrar-puntajes');
 
-btnBorrarPuntajes.addEventListener('click', () => {
+const btnBorrarPuntajesMemotest =
+    document.querySelector("#btn-borrar-puntajes-memotest");
+
+btnBorrarPuntajesMemotest.addEventListener("click", () => {
 
     const confirmar = confirm(
-        '¿Seguro que querés borrar todos los puntajes?'
+        "¿Seguro que querés borrar todos los puntajes del Memotest?"
     );
 
     if (confirmar) {
-        localStorage.removeItem('puntajes');
+        localStorage.removeItem("puntajesMemotest");
         location.reload();
     }
 });
