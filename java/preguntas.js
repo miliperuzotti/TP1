@@ -382,54 +382,43 @@ function siguientePregunta() {
 
 //Mostrar pantalla de resultados
 function mostrarResultados() {
-    // Oculta pantalla de juego y muestra la de resultados
-    document.getElementById('pantalla-juego').classList.add('oculto');
-    document.getElementById('pantalla-resultados').classList.remove('oculto');
+    pantallaJuego.style.display = 'none';
+    pantallaResultados.style.display = 'block';
 
-    // Despliega el puntaje final
-    document.getElementById('puntaje-final').textContent = `${puntaje} / 100 puntos`;
+    puntajeFinalEl.textContent = `${puntaje}`;
 
-    // Asigna un mensaje personalizado según el rendimiento
-    const mensajeFinal = document.getElementById('mensaje-evaluacion');
     if (puntaje >= 80) {
-        mensajeFinal.textContent = "¡Excelente conocimiento sobre la cultura argentina!";
+        mensajeFinalEl.textContent = "¡Excelente conocimiento sobre la cultura argentina!";
     } else if (puntaje >= 50) {
-        mensajeFinal.textContent = "¡Buen trabajo! Conoces bastante sobre nuestro patrimonio.";
+        mensajeFinalEl.textContent = "¡Buen trabajo! Conoces bastante sobre nuestro patrimonio.";
     } else {
-        mensajeFinal.textContent = "Sigue explorando y aprendiendo sobre nuestra cultura.";
+        mensajeFinalEl.textContent = "Sigue explorando y aprendiendo sobre nuestra cultura.";
     }
-
-    // Renderiza la tabla de los mejores puntajes guardados
-    actualizarTablaRanking();
 }
 
-// Guardar el puntaje en el almacenamiento local del navegador (localStorage)
 function guardarPuntaje() {
-    const inputNombre = document.getElementById('nombre-jugador');
-    const nombre = inputNombre.value.trim();
+    const nombre = nombreJugadorEl.value.trim();
 
     if (nombre === "") {
-        alert("Por favor, ingresa tu nombre.");
+        alert("Por favor, ingresá tu nombre.");
         return;
     }
 
-    // Obtiene el ranking previo de localStorage o crea un arreglo vacío si no existe
+    // Obtener ranking actual de la Trivia
     const rankingGuardado = JSON.parse(localStorage.getItem('rankingTrivia')) || [];
 
-    // Agrega el nuevo registro
+    // Agregar el nuevo puntaje
     rankingGuardado.push({ nombre: nombre, puntaje: puntaje });
 
-    // Ordena de mayor a menor puntaje
+    // Ordenar de mayor a menor
     rankingGuardado.sort((a, b) => b.puntaje - a.puntaje);
 
-    // Mantiene solo el Top 10
+    // Guardar Top 10
     const top10 = rankingGuardado.slice(0, 10);
-
-    // Guarda de nuevo en localStorage convertido a texto JSON
     localStorage.setItem('rankingTrivia', JSON.stringify(top10));
 
-    inputNombre.value = ''; // Limpia el input
-    actualizarTablaRanking(); // Recarga la tabla en pantalla
+    alert("¡Puntaje guardado con éxito!");
+    btnGuardarPuntaje.disabled = true; // Evita guardar múltiples veces
 }
 
 // Función auxiliar para pintar el ranking en el DOM
