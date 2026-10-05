@@ -259,7 +259,6 @@ const mensaje = document.getElementById("mensaje");
 const jugadorActual = document.getElementById("jugador-actual");
 const jugadorCreadoHTML = document.getElementById("jugador-creado");
 const zonaFormulario = document.getElementById("zona-formulario");
-const scoreboardHTML = document.getElementById("scoreboard");
 
 // ===============================
 // TIRAR UN DADO
@@ -602,34 +601,6 @@ function mostrarFormulario(puntaje) {
     });
 }
 
-
-// ===============================
-// SCOREBOARD
-// ===============================
-
-function mostrarScoreboard() {
-
-    const jugadoresOrdenados = [...scoreboard].sort(
-        (a, b) => b.puntaje - a.puntaje
-    );
-
-    scoreboardHTML.innerHTML = `
-        <h2>Tabla de puntajes</h2>
-
-        <ol>
-            ${jugadoresOrdenados.map(jugador => `
-                <li>
-                    <strong>${jugador.nombre}</strong>
-                    — Dorsal ${jugador.dorsal}
-                    — Ataque: ${jugador.ataque}
-                    — Pase: ${jugador.pase}
-                    — Defensa: ${jugador.defensa}
-                    — <strong>${jugador.puntaje} puntos</strong>
-                </li>
-            `).join("")}
-        </ol>
-    `;
-}
 
 
 // ===============================
