@@ -78,7 +78,7 @@ Cuando tengas ataque, pase y defensa, el juego calcula tu puntaje total. Despué
 
 ### Juego de preguntas
 
-El tercer juego consiste en una trivia relacionada con Argentina y utiliza una API pública para obtener los datos necesarios para generar las preguntas.
+El tercer juego consiste en una trivia relacionada con Argentina y utiliza una API para obtener los datos necesarios para generar las preguntas.
 
 La partida está compuesta por 10 preguntas de opción múltiple, con cuatro opciones de respuesta.
 
@@ -112,7 +112,7 @@ Cada juego cuenta con su propia lógica en JavaScript, mientras que la hoja de e
 * **JavaScript:** lógica de los juegos, interacción con el usuario y manipulación dinámica del contenido.
 * **JSON:** almacenamiento y organización de datos utilizados por el proyecto.
 * **LocalStorage:** almacenamiento de los puntajes y récords.
-* **API pública:** obtención de datos utilizados en el juego de preguntas.
+* **API:** obtención de datos utilizados en el juego de preguntas.
 * **GitHub:** almacenamiento y desarrollo colaborativo del proyecto.
 
 ## Principales funcionalidades
@@ -137,7 +137,7 @@ Entre las principales funcionalidades implementadas se encuentran:
 
 ## API utilizada
 
-Para el juego de preguntas se utiliza un archivo descargado de una API pública del Ministerio de Cultura de Argentina (https://cultura.argentina.apidocs.ar/) relacionada con **Sonidos y Lenguas**.
+Para el juego de preguntas se utiliza un archivo descargado de una API del Ministerio de Cultura de Argentina (https://cultura.argentina.apidocs.ar/) relacionada con **Sonidos y Lenguas**.
 
 La API permite obtener datos que luego son procesados por JavaScript para incorporarlos al funcionamiento del juego. No pudimos conseguir la URL pero si pudimos descargar la API y utilizarla de manera local.
 
