@@ -601,8 +601,6 @@ function mostrarFormulario(puntaje) {
     });
 }
 
-
-
 // ===============================
 // JUGAR DE NUEVO
 // ===============================
